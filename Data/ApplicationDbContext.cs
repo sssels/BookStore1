@@ -13,4 +13,11 @@ namespace BookStore1.Data{
         public DbSet<CartItem> CartItems { get; set; }
 
     }
+        public class IDDbContext : DbContext
+    {
+        public IDDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+    }
 }

@@ -1,43 +1,15 @@
 ﻿@page
-@model IndexModel
-<style>
-    .custom-button {
-        background-color: #4CAF50; /* Yeşil */
-        border: none;
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 12px;
-    }
-</style>
-
+@model BookStore1.Pages.IndexModel
 @{
-    ViewData["Title"] = "Book List";
+    ViewData["Title"] = "Home page";
 }
 
-<h1>Book List</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Publication Year</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var book in Model.Books)
-    {
-        <tr>
-            <td>@book.Title</td>
-            <td>@book.Author</td>
-            <td>@book.PublicationYear</td>
-        </tr>
-    }
-    </tbody>
-</table>
+<div class="text-center">
+    <h1 class="display-4">BookStore</h1>
+    <p>Welcome to Book Store</p>
+    <form method="post">
+        <button type="submit" class="btn btn-primary" formaction="/Register">Register</button>
+        <button type="submit" class="btn btn-secondary" formaction="/Login">Login</button>
+        <button type="submit" class="btn btn-success" formaction="/Cart">Cart</button>
+    </form>
+</div>

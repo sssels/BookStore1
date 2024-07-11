@@ -8,7 +8,6 @@ using BookStore1.Data;
 using BookStore1.Services;
 using System;
 using System.Text;
-#nullable disable
 
 namespace BookStore1
 {
@@ -27,13 +26,15 @@ namespace BookStore1
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection"),
-                    new MySqlServerVersion(new Version(9, 0, 0)) // Ensure the version is correct
+                    new MySqlServerVersion(new Version(9, 0, 0)), // Ensure the version is correct
+                    mySqlOptions => mySqlOptions.EnableRetryOnFailure() // Enable retry on failure
                 ));
 
             services.AddScoped<BookService>(); // Register BookService
             services.AddScoped<AuthService>(); // Register AuthService
 
-            services.AddControllers();
+            services.AddControllersWithViews(); // Add support for controllers with views
+            services.AddRazorPages(); // Add support for Razor Pages
 
             // JWT Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -110,6 +111,7 @@ namespace BookStore1
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapRazorPages(); // Map Razor Pages endpoints
             });
         }
     }
