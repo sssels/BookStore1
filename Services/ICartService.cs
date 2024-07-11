@@ -1,4 +1,5 @@
 using BookStore1.Models;
+#nullable disable
 public interface ICartService
 {
     Task AddToCart(CartItem cartItem);

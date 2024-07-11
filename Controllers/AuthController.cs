@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BookStore1.Models;
 using BookStore1.Services;
-
+#nullable disable
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase

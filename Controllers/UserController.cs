@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using BookStore1.Models;
 using BookStore1.Services;
 using System.Threading.Tasks;
-
+#nullable disable
 namespace BookStore1.Controllers
 {
     [ApiController]

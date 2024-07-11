@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Controllers\_ViewStart.cshtml" />
     <Content Remove="Views\Admins\Create.cshtml" />
     <Content Remove="Views\Admins\Delete.cshtml" />
     <Content Remove="Views\Admins\Details.cshtml" />
@@ -18,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -28,11 +28,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="MySQL.Data" Version="9.0.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\" />
     <Folder Include="wwwroot\Admins\" />
     <Folder Include="wwwroot\Admins\b\" />
   </ItemGroup>
@@ -42,7 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Controllers\_ViewStart.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Admins\Create.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Admins\Delete.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Admins\Details.cshtml" />
@@ -53,7 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Controllers\_ViewStart.cshtml" />
     <None Include="Views\Admins\Create.cshtml" />
     <None Include="Views\Admins\Delete.cshtml" />
     <None Include="Views\Admins\Details.cshtml" />
@@ -61,10 +60,6 @@
     <None Include="Views\Admins\Index.cshtml" />
     <None Include="Views\Shared\_AdminLayout.cshtml" />
     <None Include="Views\_ViewStart.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Controllers\_ViewStart.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

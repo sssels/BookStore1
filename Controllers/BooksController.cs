@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BookStore1.Models;
 using BookStore1.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BookStore1.Controllers
@@ -37,7 +38,8 @@ namespace BookStore1.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Book>>> GetAllBooks()
         {
-            return await _bookService.GetAllBooksAsync();
+            var books = await _bookService.GetAllBooksAsync();
+            return books;
         }
 
         [HttpPut("{id}")]

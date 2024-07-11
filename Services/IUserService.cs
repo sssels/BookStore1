@@ -1,5 +1,5 @@
 using BookStore1.Models;
-
+#nullable disable
 namespace BookStore1.Services
 {
     public interface IUserService

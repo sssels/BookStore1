@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Selen\\Desktop\\BookStore1\\BookStore1.csproj": {}
+    "C:\\Users\\Selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Selen\\Desktop\\BookStore1\\BookStore1.csproj": {
+    "C:\\Users\\Selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Selen\\Desktop\\BookStore1\\BookStore1.csproj",
+        "projectUniqueName": "C:\\Users\\Selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj",
         "projectName": "BookStore1",
-        "projectPath": "C:\\Users\\Selen\\Desktop\\BookStore1\\BookStore1.csproj",
+        "projectPath": "C:\\Users\\Selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj",
         "packagesPath": "C:\\Users\\Selen\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Selen\\Desktop\\BookStore1\\obj\\",
+        "outputPath": "C:\\Users\\Selen\\Documents\\GitHub\\BookStore1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Selen\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -32,12 +32,21 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.6, )"
@@ -58,9 +67,17 @@
               "target": "Package",
               "version": "[8.0.6, )"
             },
+            "MySQL.Data": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[8.0.2, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.6.2, )"
             }
           },
           "imports": [
@@ -82,7 +99,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

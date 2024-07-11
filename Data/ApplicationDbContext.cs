@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using BookStore1.Models;
-
+#nullable disable
 namespace BookStore1.Data{
     public class ApplicationDbContext:DbContext{
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext>options):base(options){

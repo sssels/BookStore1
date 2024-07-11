@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStore1.Data;
 using BookStore1.Models;
-
+#nullable disable
 namespace BookStore1.Controllers
 {
     public class AdminsController : Controller

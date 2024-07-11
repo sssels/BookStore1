@@ -2,7 +2,7 @@ using BookStore1.Data;
 using BookStore1.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-
+#nullable disable
 namespace BookStore1.Services
 {
     public class BookService

@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-
+#nullable disable
 namespace BookStore1.Services
 {
     public class AuthService
