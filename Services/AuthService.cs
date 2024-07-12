@@ -58,9 +58,9 @@ namespace BookStore1.Services
             return new AuthResult { Success = true, Message = "User registered successfully", Token = tokenString };
         }
 
-        public async Task<AuthResult> LoginAsync(UserLogin userLogin)
+        public async Task<AuthResult> LoginAsync(LoginModel LoginModel)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == userLogin.Username && u.Password == userLogin.Password);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == LoginModel.Username && u.Password == LoginModel.Password);
             if (user == null)
             {
                 return new AuthResult { Success = false, Message = "Invalid username or password" };

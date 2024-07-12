@@ -8,7 +8,11 @@ using BookStore1.Data;
 using BookStore1.Services;
 using System;
 using System.Text;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
+#nullable disable
 namespace BookStore1
 {
     public class Startup
@@ -82,6 +86,17 @@ namespace BookStore1
                     }
                 });
             });
+
+            // CORS ayarları ekleyin
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -104,6 +119,8 @@ namespace BookStore1
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.UseCors("AllowAll");
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -1,45 +1,27 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BookStore1.Models;
-using BookStore1.Services;
-#nullable disable
-[Route("api/[controller]")]
-[ApiController]
-public class AuthController : ControllerBase
+
+namespace BookStore1.Controllers
 {
-    private readonly IUserService _userService;
-
-    public AuthController(IUserService userService)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
     {
-        _userService = userService;
-    }
-
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] User user)
-    {
-        var newUser = await _userService.Register(user);
-        return Ok(newUser);
-    }
-
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] User user)
-    {
-        var loggedInUser = await _userService.Login(user.Username, user.Password);
-        if (loggedInUser == null)
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginModel loginModel)
         {
-            return Unauthorized();
-        }
-        return Ok(loggedInUser);
-    }
+            // Örnek kullanıcı adı ve parola
+            string correctUsername = "admin";
+            string correctPassword = "password";
 
-    [HttpPost("admin-login")]
-    public async Task<IActionResult> AdminLogin([FromBody] User user)
-    {
-        var adminUser = await _userService.AdminLogin(user.Username, user.Password);
-        if (adminUser == null)
-        {
-            return Unauthorized();
+            if (loginModel.Username == correctUsername && loginModel.Password == correctPassword)
+            {
+                return Ok(new { message = "Giriş başarılı!" });
+            }
+            else
+            {
+                return Unauthorized(new { message = "Kullanıcı adı veya parola hatalı!" });
+            }
         }
-        return Ok(adminUser);
     }
 }
