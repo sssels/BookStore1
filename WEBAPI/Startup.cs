@@ -1,16 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using BookStore1.Data;
 using BookStore1.Services;
-using System;
 using System.Text;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 
 #nullable disable
 namespace BookStore1
@@ -26,19 +21,20 @@ namespace BookStore1
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // MySQL connection
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(
-                    Configuration.GetConnectionString("DefaultConnection"),
-                    new MySqlServerVersion(new Version(9, 0, 0)), // Ensure the version is correct
-                    mySqlOptions => mySqlOptions.EnableRetryOnFailure() // Enable retry on failure
-                ));
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<BookService>(); // Register BookService
-            services.AddScoped<AuthService>(); // Register AuthService
+            // Add Identity services
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-            services.AddControllersWithViews(); // Add support for controllers with views
-            services.AddRazorPages(); // Add support for Razor Pages
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<AuthService>();
+
+            services.AddControllersWithViews();
+            services.AddRazorPages();
 
             // JWT Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -87,7 +83,7 @@ namespace BookStore1
                 });
             });
 
-            // CORS ayarları ekleyin
+            // CORS settings
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
@@ -128,7 +124,7 @@ namespace BookStore1
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapRazorPages(); // Map Razor Pages endpoints
+                endpoints.MapRazorPages();
             });
         }
     }

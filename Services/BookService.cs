@@ -1,51 +1,38 @@
-using BookStore1.Data;
 using BookStore1.Models;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-#nullable disable
-namespace BookStore1.Services
+
+public class BookService : IBookService
 {
-    public class BookService
+    private readonly IBookRepository _bookRepository;
+
+    public BookService(IBookRepository bookRepository)
     {
-        private readonly ApplicationDbContext _context;
+        _bookRepository = bookRepository;
+    }
 
-        public BookService(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+    public async Task<IEnumerable<Book>> GetAllBooksAsync()
+    {
+        return await _bookRepository.GetAllBooksAsync();
+    }
 
-        public async Task<Book> CreateBookAsync(Book book)
-        {
-            _context.Books.Add(book);
-            await _context.SaveChangesAsync();
-            return book;
-        }
+    public async Task<Book> GetBookByIdAsync(int id)
+    {
+        return await _bookRepository.GetBookByIdAsync(id);
+    }
 
-        public async Task<Book> GetBookByIdAsync(int id)
-        {
-            return await _context.Books.FindAsync(id);
-        }
+    public async Task AddBookAsync(Book book)
+    {
+        await _bookRepository.AddBookAsync(book);
+    }
 
-        public async Task<List<Book>> GetAllBooksAsync()
-        {
-            return await _context.Books.ToListAsync();
-        }
+    public async Task UpdateBookAsync(Book book)
+    {
+        await _bookRepository.UpdateBookAsync(book);
+    }
 
-        public async Task<Book> UpdateBookAsync(Book book)
-        {
-            _context.Entry(book).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return book;
-        }
-
-        public async Task DeleteBookAsync(int id)
-        {
-            var book = await _context.Books.FindAsync(id);
-            if (book != null)
-            {
-                _context.Books.Remove(book);
-                await _context.SaveChangesAsync();
-            }
-        }
+    public async Task DeleteBookAsync(int id)
+    {
+        await _bookRepository.DeleteBookAsync(id);
     }
 }

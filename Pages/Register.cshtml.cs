@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 #nullable disable
+
 namespace BookStore1.Pages.Account
 {
     public class RegisterModel : PageModel
@@ -22,6 +23,9 @@ namespace BookStore1.Pages.Account
 
         public class InputModel
         {
+            [Required]
+            public string Username { get; set; }
+
             [Required]
             [EmailAddress]
             public string Email { get; set; }
@@ -44,7 +48,7 @@ namespace BookStore1.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new IdentityUser { UserName = Input.Username, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
