@@ -1,10 +1,8 @@
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-#nullable disable
-
 namespace BookStore1.Pages.Account
 {
     public class RegisterModel : PageModel
@@ -33,15 +31,6 @@ namespace BookStore1.Pages.Account
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-        }
-
-        public void OnGet()
-        {
         }
 
         public async Task<IActionResult> OnPostAsync()
