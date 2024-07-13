@@ -1,22 +1,41 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* Genel ayarlar */
 body {
-  margin-bottom: 60px;
+  background-color: #f8f9fa !important;
+  font-family: 'Roboto', sans-serif !important;
+  color: #333 !important;
+}
+
+h1 {
+  font-size: 2.5rem !important;
+  color: #343a40 !important;
+}
+
+/* Tablo stilleri */
+.table {
+  margin-top: 20px !important;
+  border-radius: 0.25rem !important;
+  overflow: hidden !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.table thead th {
+  background-color: #343a40 !important;
+  color: #ffffff !important;
+  border-bottom: 2px solid #dee2e6 !important;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f3f5 !important;
+}
+
+/* Düğme stilleri */
+.btn-success {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+.btn-success:hover {
+  background-color: #218838 !important;
+  border-color: #1e7e34 !important;
 }

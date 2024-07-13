@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "q46eCBNrC5Y=",
+  "dgSpecHash": "p7QzSKX7fXc=",
   "success": true,
   "projectFilePath": "C:\\Users\\Selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Selen\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Selen\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\Selen\\.nuget\\packages\\bootstrap\\5.3.3\\bootstrap.5.3.3.nupkg.sha512",
     "C:\\Users\\Selen\\.nuget\\packages\\bouncycastle.cryptography\\2.3.1\\bouncycastle.cryptography.2.3.1.nupkg.sha512",
     "C:\\Users\\Selen\\.nuget\\packages\\google.protobuf\\3.26.1\\google.protobuf.3.26.1.nupkg.sha512",
     "C:\\Users\\Selen\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
