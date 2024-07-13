@@ -29,13 +29,12 @@
                         <input asp-for="Input.Password" type="password" class="form-control" placeholder="Enter your password" required />
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    <button><a href="/Books/Index" class="btn btn-success">Login</a></button>
                 </form>
 
                 <div class="text-center mt-3">
                     <p>If you don't have an account
-                        <a asp-page="/Account/Register">
-                            <button type="button" class="btn btn-link text-primary">Register here</button>
+                        <a href="/Account/Register" class="btn btn-primary">Register Here</a>
                         </a>
                     </p>
                 </div>

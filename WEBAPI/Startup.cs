@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using BookStore1.Data;
 using BookStore1.Services;
 using System.Text;
-
 #nullable disable
 namespace BookStore1
 {
@@ -21,22 +24,29 @@ namespace BookStore1
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Configure DbContext
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add Identity services
+            // Configure Identity
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            // Add scoped services
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<AuthService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<ICartService, CartService>();
+            
 
+
+            // Add Controllers and Razor Pages
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            // JWT Authentication
+            // Configure JWT Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -54,19 +64,21 @@ namespace BookStore1
                     };
                 });
 
-            // Swagger configuration
+            // Configure Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bookstore API", Version = "v1" });
+
+                // Configure JWT Bearer token authorization
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
-                    Description = "Please enter token",
+                    Description = "Please enter JWT with Bearer into field",
                     Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT"
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
                 });
+
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -76,22 +88,27 @@ namespace BookStore1
                             {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
-                            }
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
                         },
-                        new string[] {}
+                        new string[] { }
                     }
                 });
             });
 
-            // CORS settings
+            // Configure CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader();
-                });
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
             });
         }
 
@@ -114,6 +131,7 @@ namespace BookStore1
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseRouting();
 
             app.UseCors("AllowAll");

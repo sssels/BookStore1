@@ -1,43 +1,22 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BookStore1.Data;
 using BookStore1.Models;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-#nullable disable
+using BookStore1.Services;
+
 namespace BookStore1.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UserService _userService;
 
-        public RegisterModel(ApplicationDbContext context)
+        public RegisterModel(UserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
 
         [BindProperty]
-        public RegisterInputModel Input { get; set; }
-
-        public class RegisterInputModel
-        {
-            [Required]
-            public string Username { get; set; }
-
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            [Compare("Password", ErrorMessage = "Passwords do not match.")]
-            public string ConfirmPassword { get; set; }
-        }
+        public InputModel Input { get; set; }
 
         public void OnGet()
         {
@@ -54,25 +33,10 @@ namespace BookStore1.Pages.Account
             {
                 Username = Input.Username,
                 Email = Input.Email,
-                Password = Input.Password // Not: Şifreyi hashleyerek saklamalısınız.
+                Password = Input.Password // Bu kısmın şifreleme işlemiyle güvenli hale getirilmesi önemlidir.
             };
 
-            try
-            {
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException ex)
-            {
-                ModelState.AddModelError(string.Empty, $"Veritabanı hatası: {ex.Message}");
-                return Page();
-            }
-            catch (System.Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, $"Genel hata: {ex.Message}");
-                return Page();
-            }
-
+            await _userService.CreateUserAsync(user);
             return RedirectToPage("/Index");
         }
     }

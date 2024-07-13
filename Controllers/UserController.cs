@@ -2,61 +2,32 @@ using Microsoft.AspNetCore.Mvc;
 using BookStore1.Models;
 using BookStore1.Services;
 using System.Threading.Tasks;
+using BookStore1.Data;
 #nullable disable
 namespace BookStore1.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+[Route("api/[controller]")]
+public class UsersController : ControllerBase
+{
+    private readonly ApplicationDbContext _context;
+
+    public UsersController(ApplicationDbContext context)
     {
-        private readonly UserService _userService;
-
-        public UsersController(UserService userService)
-        {
-            _userService = userService;
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(User user)
-        {
-            var createdUser = await _userService.CreateUserAsync(user);
-            return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(int id)
-        {
-            var user = await _userService.GetUserByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return user;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<List<User>>> GetAllUsers()
-        {
-            return await _userService.GetAllUsersAsync();
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, User user)
-        {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            await _userService.UpdateUserAsync(user);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            await _userService.DeleteUserAsync(id);
-            return NoContent();
-        }
+        _context = context;
     }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] User user)
+    {
+        if (user == null || string.IsNullOrEmpty(user.Username) || string.IsNullOrEmpty(user.Email))
+        {
+            return BadRequest("Invalid user data.");
+        }
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+        return Ok(user);
+    }
+}
 }

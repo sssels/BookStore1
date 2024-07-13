@@ -1,23 +1,13 @@
-using System.ComponentModel.DataAnnotations;
 #nullable disable
-namespace BookStore1.Models
+namespace BookStore1.Pages.Account
 {
-    public class RegisterInputModel
+    public class InputModel
     {
-        [Required]
         public string Username { get; set; }
-
-        [Required]
-        [EmailAddress]
         public string Email { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
         public string Password { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Passwords do not match.")]
+        
+        // Diğer alanları ekleyebilirsiniz, örneğin şifre doğrulama için:
         public string ConfirmPassword { get; set; }
     }
 }

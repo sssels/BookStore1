@@ -28,13 +28,12 @@
             <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirm your password" />
             <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Register</button>
+        <button><a href="/Index" class="btn btn-success">Register</a></button>
     </form>
 
     <div class="text-center mt-3">
         <p>Already have an account? 
-            <a asp-page="/Account/Login">
-                <button type="button" class="btn btn-link text-primary">Login here</button>
+        <button><a href="/Account/Login" class="btn btn-secondary">Login Here</a></button>
             </a>
         </p>
     </div>
