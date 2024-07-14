@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BookStore1.Models;
 using BookStore1.Services;
-
+#nullable disable
 namespace BookStore1.Pages.Account
 {
     public class RegisterModel : PageModel
@@ -39,5 +39,14 @@ namespace BookStore1.Pages.Account
             await _userService.CreateUserAsync(user);
             return RedirectToPage("/Index");
         }
+        public class InputModel
+    {
+            public string Username { get; set; }
+            public string Email { get; set; }
+            public string Password { get; set; }
+        
+        // Diğer alanları ekleyebilirsiniz, örneğin şifre doğrulama için:
+            public string ConfirmPassword { get; set; }
+    }
     }
 }

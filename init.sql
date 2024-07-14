@@ -35,4 +35,3 @@
 --);
 --INSERT INTO User (Username, Email, Password) VALUES
 --('selen','selent@gmail.com','1233');
---SELECT * FROM User;

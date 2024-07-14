@@ -10,7 +10,7 @@ namespace BookStore1.Data
 
         public DbSet<Book> Bookz { get; set; }
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
     }
 }

@@ -1,5 +1,0 @@
-CREATE TABLE Users (
-    Username TEXT NOT NULL PRIMARY KEY,
-    Email TEXT NOT NULL,
-    Password TEXT NOT NULL
-);

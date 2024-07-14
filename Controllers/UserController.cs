@@ -25,7 +25,7 @@ public class UsersController : ControllerBase
             return BadRequest("Invalid user data.");
         }
 
-        _context.Users.Add(user);
+        _context.User.Add(user);
         await _context.SaveChangesAsync();
         return Ok(user);
     }
