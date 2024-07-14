@@ -4,10 +4,6 @@
     ViewData["Title"] = "Book List";
 }
 
-<head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-MlAoQu+rQk8Fr0uVEf+GFFfW8Jvh78JGZ49yAG9ScP4QX1fGa4F0UdL1ru1W7JFM" crossorigin="anonymous">
-    <link rel="stylesheet" href="~/css/site.css">
-</head>
 
 <body>
     <form asp-antiforgery="true" method="post" class="shadow p-4 rounded bg-light"></form>
@@ -39,14 +35,14 @@
                                 <td>@book.Price.ToString("C", new System.Globalization.CultureInfo("tr-TR"))</td>
                                 <td>
                                     <form method="post" asp-page-handler="AddToCart" class="d-inline">
-                                        <input type="hidden" name="bookId" value="@book.ID" />
+                                        <input type="hidden" name="bookId" value="@book.Id" />
                                         <button type="submit" class="btn btn-success btn-sm">Add to Cart</button>
                                     </form>
                                 </td>
                             </tr>
                         }
                     </tbody>
-                    <button><a href="/Cart/CreateCart" class="btn btn-success">Go to Cart</a></button>
+                    <button><a href="/Cart/Cart" class="btn btn-success">Go to Cart</a></button>
                 </table>
             </div>
         </div>

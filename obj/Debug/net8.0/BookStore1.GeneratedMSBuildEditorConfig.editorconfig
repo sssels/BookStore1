@@ -42,12 +42,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va3NcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Selen/Documents/GitHub/BookStore1/Pages/Cart/Cart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FydFxDYXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Selen/Documents/GitHub/BookStore1/Pages/Cart/CheckOut.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FydFxDaGVja091dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Selen/Documents/GitHub/BookStore1/Pages/Cart/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FydFxJbmRleC5jc2h0bWw=
+[C:/Users/Selen/Documents/GitHub/BookStore1/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Selen/Documents/GitHub/BookStore1/Pages/Index.cshtml]

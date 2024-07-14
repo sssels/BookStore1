@@ -6,7 +6,7 @@ namespace BookStore1.Models
     public class Book
     {
         [Key] // Primary Key
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(200)] // Optional: Set a maximum length

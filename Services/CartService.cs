@@ -1,23 +1,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using BookStore1.Models;
+
 namespace BookStore1.Services
 {
-    public interface ICartService
-    {
-        Cart GetCart(string userId);
-        void AddToCart(string userId, int bookId, string title, decimal price, int quantity);
-        void RemoveFromCart(string userId, int bookId);
-        void ClearCart(string userId);
-        void Checkout(string userId);
-    }
-
     public class CartService : ICartService
     {
         private readonly Dictionary<string, Cart> _userCarts = new Dictionary<string, Cart>();
 
         public Cart GetCart(string userId)
         {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty.");
+            }
+
             if (!_userCarts.ContainsKey(userId))
             {
                 _userCarts[userId] = new Cart { UserId = userId };
@@ -64,10 +61,8 @@ namespace BookStore1.Services
         public void Checkout(string userId)
         {
             var cart = GetCart(userId);
-            // Burada sipariş oluşturma veya stoktan düşme işlemleri yapılabilir.
-            // Örneğin, sipariş veritabanına kaydedilebilir ve stoklardan düşme işlemi yapılabilir.
-            // Bu adım sizin veritabanı modelinize ve iş mantığınıza göre değişebilir.
-            ClearCart(userId); // Sepeti temizle
+            // Add order creation and stock deduction logic here.
+            ClearCart(userId); // Clear the cart
         }
     }
 }

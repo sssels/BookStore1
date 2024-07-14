@@ -1,0 +1,58 @@
+@page
+@model BookStore1.Pages.CartModel
+@{
+    ViewData["Title"] = "Your Cart";
+}
+
+<h2>Your Cart</h2>
+
+@if (Model.Cart != null && Model.Cart.Items.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Cart.Items)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Price.ToString("C", new System.Globalization.CultureInfo("tr-TR"))</td>
+                <td>@item.Quantity</td>
+                <td>@(item.Price * item.Quantity).ToString("C", new System.Globalization.CultureInfo("tr-TR"))</td>
+                <td>
+                    <form method="post" asp-page-handler="RemoveFromCart" class="d-inline">
+                        <input type="hidden" name="bookId" value="@item.BookId" />
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <div>Total: @(Model.Cart.Items.Sum(item => item.Price * item.Quantity)).ToString("C", new System.Globalization.CultureInfo("tr-TR"))</div>
+
+    <div>
+        <form method="post" asp-page-handler="ClearCart" class="d-inline">
+            <button type="submit" class="btn btn-warning">Clear Cart</button>
+        </form>
+        <form method="post" asp-page-handler="Checkout" class="d-inline">
+            <button type="submit" class="btn btn-primary">Checkout</button>
+        </form>
+    </div>
+}
+else
+{
+    <p>Your cart is empty.</p>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

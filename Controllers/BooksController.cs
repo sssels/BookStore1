@@ -58,7 +58,7 @@ namespace BookStore1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Author,Title,Genre,Price,InStock,AddedDate,UpdatedDate")] Book book)
         {
-            if (id != book.ID)
+            if (id != book.Id)
         {
         return NotFound();
         }
@@ -72,7 +72,7 @@ namespace BookStore1.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BookExists(book.ID))
+                if (!BookExists(book.Id))
                 {
                     return NotFound();
                 }
@@ -88,7 +88,7 @@ namespace BookStore1.Controllers
 
         private bool BookExists(int id)
         {   
-            return _context.Bookz.Any(e => e.ID == id);
+            return _context.Bookz.Any(e => e.Id == id);
         }
         public async Task<IActionResult> Delete(int? id)
 {
@@ -98,7 +98,7 @@ namespace BookStore1.Controllers
     }
 
     var book = await _context.Bookz
-        .FirstOrDefaultAsync(m => m.ID == id);
+        .FirstOrDefaultAsync(m => m.Id == id);
     if (book == null)
     {
         return NotFound();
