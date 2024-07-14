@@ -1,25 +1,73 @@
+using System.Collections.Generic;
+using System.Linq;
 using BookStore1.Models;
-using BookStore1.Data;
-using Microsoft.EntityFrameworkCore;
-#nullable disable
-public class CartService : ICartService
+namespace BookStore1.Services
 {
-    private readonly ApplicationDbContext _context;
-
-    public CartService(ApplicationDbContext context)
+    public interface ICartService
     {
-        _context = context;
+        Cart GetCart(string userId);
+        void AddToCart(string userId, int bookId, string title, decimal price, int quantity);
+        void RemoveFromCart(string userId, int bookId);
+        void ClearCart(string userId);
+        void Checkout(string userId);
     }
 
-    public async Task AddToCart(CartItem cartItem)
+    public class CartService : ICartService
     {
-        _context.CartItems.Add(cartItem);
-        await _context.SaveChangesAsync();
-    }
+        private readonly Dictionary<string, Cart> _userCarts = new Dictionary<string, Cart>();
 
-    public async Task<IEnumerable<CartItem>> GetCartItems(int userId)
-    {
-        return await _context.CartItems.Where(c => c.UserId == userId).ToListAsync();
+        public Cart GetCart(string userId)
+        {
+            if (!_userCarts.ContainsKey(userId))
+            {
+                _userCarts[userId] = new Cart { UserId = userId };
+            }
+            return _userCarts[userId];
+        }
+
+        public void AddToCart(string userId, int bookId, string title, decimal price, int quantity)
+        {
+            var cart = GetCart(userId);
+            var existingItem = cart.Items.FirstOrDefault(item => item.BookId == bookId);
+            if (existingItem != null)
+            {
+                existingItem.Quantity += quantity;
+            }
+            else
+            {
+                cart.Items.Add(new CartItem
+                {
+                    BookId = bookId,
+                    Title = title,
+                    Price = price,
+                    Quantity = quantity
+                });
+            }
+        }
+
+        public void RemoveFromCart(string userId, int bookId)
+        {
+            var cart = GetCart(userId);
+            var itemToRemove = cart.Items.FirstOrDefault(item => item.BookId == bookId);
+            if (itemToRemove != null)
+            {
+                cart.Items.Remove(itemToRemove);
+            }
+        }
+
+        public void ClearCart(string userId)
+        {
+            var cart = GetCart(userId);
+            cart.Items.Clear();
+        }
+
+        public void Checkout(string userId)
+        {
+            var cart = GetCart(userId);
+            // Burada sipariş oluşturma veya stoktan düşme işlemleri yapılabilir.
+            // Örneğin, sipariş veritabanına kaydedilebilir ve stoklardan düşme işlemi yapılabilir.
+            // Bu adım sizin veritabanı modelinize ve iş mantığınıza göre değişebilir.
+            ClearCart(userId); // Sepeti temizle
+        }
     }
 }
-

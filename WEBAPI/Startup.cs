@@ -8,9 +8,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using BookStore1.Data;
+using BookStore1.Models;
 using BookStore1.Services;
+using System;
 using System.Text;
+
 #nullable disable
+
 namespace BookStore1
 {
     public class Startup
@@ -29,22 +33,20 @@ namespace BookStore1
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             // Configure Identity
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                {
+                    // Password settings
+                    options.Password.RequireDigit = true;
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireLowercase = false;
+
+                    // User settings
+                    options.User.RequireUniqueEmail = true;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
-            // Add scoped services
-            services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<IBookService, BookService>();
-            services.AddScoped<AuthService>();
-            services.AddScoped<UserService>();
-            services.AddScoped<ICartService, CartService>();
-            
-
-
-            // Add Controllers and Razor Pages
-            services.AddControllersWithViews();
-            services.AddRazorPages();
 
             // Configure JWT Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -93,12 +95,12 @@ namespace BookStore1
                             Name = "Bearer",
                             In = ParameterLocation.Header
                         },
-                        new string[] { }
+                        Array.Empty<string>()
                     }
                 });
             });
 
-            // Configure CORS
+            // Add CORS
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -110,9 +112,20 @@ namespace BookStore1
                             .AllowAnyHeader();
                     });
             });
+
+            // Add scoped services
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<AuthService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<ICartService, CartService>();
+
+            // Add Controllers and Razor Pages
+            services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -134,16 +147,19 @@ namespace BookStore1
 
             app.UseRouting();
 
-            app.UseCors("AllowAll");
-
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors("AllowAll");
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
+
+            // Initialize roles and admin user
+            RoleInitializer.InitializeAsync(serviceProvider).Wait();
         }
     }
 }
