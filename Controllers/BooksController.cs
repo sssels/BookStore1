@@ -28,7 +28,7 @@ namespace BookStore1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Author,Title,Genre,Price,InStock,AddedDate,UpdatedDate")] Book book)
+        public async Task<IActionResult> Create([Bind("ID,Author,Title,Genre,Price,InStock,Publisher,AddedDate,UpdatedDate")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +56,7 @@ namespace BookStore1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Author,Title,Genre,Price,InStock,AddedDate,UpdatedDate")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Author,Title,Genre,Price,InStock,Publisher,AddedDate,UpdatedDate")] Book book)
         {
             if (id != book.Id)
         {

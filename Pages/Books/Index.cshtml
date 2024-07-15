@@ -21,6 +21,7 @@
                             <th>Title</th>
                             <th>Author</th>
                             <th>Genre</th>
+                            <th>Publisher</th>
                             <th>Price</th>
                             <th>Actions</th>
                         </tr>
@@ -32,6 +33,7 @@
                                 <td>@book.Title</td>
                                 <td>@book.Author</td>
                                 <td>@book.Genre</td>
+                                <td>@book.Publisher</td>
                                 <td>@book.Price.ToString("C", new System.Globalization.CultureInfo("tr-TR"))</td>
                                 <td>
                                     <form method="post" asp-page-handler="AddToCart" class="d-inline">
@@ -43,6 +45,7 @@
                         }
                     </tbody>
                     <button><a href="/Cart/Cart" class="btn btn-success">Go to Cart</a></button>
+                    <button><a href="/Index" class="btn btn-success">Home</a></button>
                 </table>
             </div>
         </div>

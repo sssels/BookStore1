@@ -18,6 +18,9 @@ namespace BookStore1.Models
         [Required]
         [MaxLength(100)] // Optional: Set a maximum length
         public string Genre { get; set; }
+        [Required]
+        [MaxLength(100)] // Optional: Set a maximum length
+        public string Publisher { get; set; }
 
         [Required]
         [Range(0, double.MaxValue)] // Ensure price is non-negative

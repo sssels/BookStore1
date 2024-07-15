@@ -119,6 +119,9 @@ namespace BookStore1
             services.AddScoped<AuthService>();
             services.AddScoped<UserService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IPublisherRepository, PublisherRepository>();
+            services.AddScoped<IPublisherService, PublisherService>();
+            
 
             // Add Controllers and Razor Pages
             services.AddControllersWithViews();

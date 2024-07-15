@@ -1,31 +1,32 @@
 --CREATE TABLE Bookz (
-  --  Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    --Author TEXT,
-   -- Title TEXT,
-   -- Price DECIMAL(10,2),
-   -- Genre TEXT,
-   -- AddedDate DATE DEFAULT CURRENT_DATE,
-   -- UpdatedDate DATE DEFAULT CURRENT_DATE,
-   -- InStock INTEGER
+ --   Id INTEGER PRIMARY KEY AUTOINCREMENT,
+ --   Author TEXT,
+ --   Title TEXT,
+ --   Price DECIMAL(10,2),
+ --   Genre TEXT,
+ --   Publisher TEXT,
+ --   AddedDate DATE DEFAULT CURRENT_DATE,
+ --   UpdatedDate DATE DEFAULT CURRENT_DATE,
+ --   InStock INTEGER
 --);
 
---INSERT INTO Bookz (Author, Title, Price, Genre, AddedDate, UpdatedDate, InStock)
+--INSERT INTO Bookz (Author, Title, Price, Genre, Publisher, AddedDate, UpdatedDate, InStock)
 --VALUES 
-  --  ('J.K. Rowling', 'Harry Potter and the Philosopher''s Stone', 24.95, 'Fantasy', DATE('now'), DATE('now'), 10),
-  --  ('George Orwell', '1984', 12.99, 'Dystopian', DATE('now'), DATE('now'), 5),
-  --  ('Harper Lee', 'To Kill a Mockingbird', 14.50, 'Classics', DATE('now'), DATE('now'), 8),
-  --  ('J.R.R. Tolkien', 'The Lord of the Rings', 29.99, 'Fantasy', DATE('now'), DATE('now'), 15),
-  --  ('Jane Austen', 'Pride and Prejudice', 9.99, 'Romance', DATE('now'), DATE('now'), 3),
-  --  ('Agatha Christie', 'Murder on the Orient Express', 19.95, 'Mystery', DATE('now'), DATE('now'), 12),
-  --  ('Stephen King', 'It', 18.75, 'Horror', DATE('now'), DATE('now'), 6),
-   -- ('Ernest Hemingway', 'The Old Man and the Sea', 11.25, 'Classics', DATE('now'), DATE('now'), 9),
-  --  ('Dan Brown', 'The Da Vinci Code', 16.99, 'Thriller', DATE('now'), DATE('now'), 7),
-  --  ('Gabriel Garcia Marquez', 'One Hundred Years of Solitude', 22.50, 'Magical Realism', DATE('now'), DATE('now'), 11),
-  --  ('J.D. Salinger', 'The Catcher in the Rye', 13.75, 'Classics', DATE('now'), DATE('now'), 13),
-  --  ('F. Scott Fitzgerald', 'The Great Gatsby', 15.99, 'Classics', DATE('now'), DATE('now'), 2),
-  --  ('Leo Tolstoy', 'War and Peace', 27.50, 'Historical Fiction', DATE('now'), DATE('now'), 10),
-  --  ('Mark Twain', 'Adventures of Huckleberry Finn', 10.95, 'Adventure', DATE('now'), DATE('now'), 6),
-  --  ('Arthur Conan Doyle', 'The Adventures of Sherlock Holmes', 21.25, 'Mystery', DATE('now'), DATE('now'), 8);
+  --  ('J.K. Rowling', 'Harry Potter and the Philosopher''s Stone', 24.95, 'Fantasy', 'Bloomsbury', DATE('now'), DATE('now'), 10),
+   -- ('George Orwell', '1984', 12.99, 'Dystopian', 'Secker & Warburg', DATE('now'), DATE('now'), 5),
+   -- ('Harper Lee', 'To Kill a Mockingbird', 14.50, 'Classics', 'J.B. Lippincott & Co.', DATE('now'), DATE('now'), 8),
+   -- ('J.R.R. Tolkien', 'The Lord of the Rings', 29.99, 'Fantasy', 'George Allen & Unwin', DATE('now'), DATE('now'), 15),
+   -- ('Jane Austen', 'Pride and Prejudice', 9.99, 'Romance', 'T. Egerton', DATE('now'), DATE('now'), 3),
+   -- ('Agatha Christie', 'Murder on the Orient Express', 19.95, 'Mystery', 'Collins Crime Club', DATE('now'), DATE('now'), 12),
+   -- ('Stephen King', 'It', 18.75, 'Horror', 'Viking Press', DATE('now'), DATE('now'), 6),
+   -- ('Ernest Hemingway', 'The Old Man and the Sea', 11.25, 'Classics', 'Charles Scribner''s Sons', DATE('now'), DATE('now'), 9),
+   -- ('Dan Brown', 'The Da Vinci Code', 16.99, 'Thriller', 'Doubleday', DATE('now'), DATE('now'), 7),
+   -- ('Gabriel Garcia Marquez', 'One Hundred Years of Solitude', 22.50, 'Magical Realism', 'Harper & Row', DATE('now'), DATE('now'), 11),
+   -- ('J.D. Salinger', 'The Catcher in the Rye', 13.75, 'Classics', 'Little, Brown and Company', DATE('now'), DATE('now'), 13),
+   -- ('F. Scott Fitzgerald', 'The Great Gatsby', 15.99, 'Classics', 'Charles Scribner''s Sons', DATE('now'), DATE('now'), 2),
+   -- ('Leo Tolstoy', 'War and Peace', 27.50, 'Historical Fiction', 'The Russian Messenger', DATE('now'), DATE('now'), 10),
+   -- ('Mark Twain', 'Adventures of Huckleberry Finn', 10.95, 'Adventure', 'Chatto & Windus / Charles L. Webster And Company', DATE('now'), DATE('now'), 6),
+   -- ('Arthur Conan Doyle', 'The Adventures of Sherlock Holmes', 21.25, 'Mystery', 'George Newnes', DATE('now'), DATE('now'), 8);
 
 --CREATE TABLE Cart (
   --  CartId INTEGER PRIMARY KEY AUTOINCREMENT,
