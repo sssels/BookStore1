@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using BookStore1.Services;
-
+#nullable disable
 namespace BookStore1.Pages.Cart
 {
     public class CartModel : PageModel
