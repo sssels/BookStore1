@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using BookStore1.Models;
 using Microsoft.EntityFrameworkCore;
 using BookStore1.Data;
-using System.Linq; 
+using System.Linq;
 
 #nullable disable
 namespace BookStore1.Pages
@@ -19,7 +19,7 @@ namespace BookStore1.Pages
             _context = context;
         }
 
-        public IEnumerable<Publisher> Publishers { get; set; }
+        public IEnumerable<BookStore1.Models.Publisher> Publishers { get; set; }
 
         public async Task OnGetAsync()
         {

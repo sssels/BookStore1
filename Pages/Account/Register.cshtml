@@ -1,44 +1,36 @@
 @page
-@model BookStore1.Pages.Account.RegisterModel
+@model BookStore1.ViewModels.RegisterViewModel
 @{
     ViewData["Title"] = "Register";
 }
 
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Register</h1>
-
-    <form asp-antiforgery="true" method="post" class="shadow p-4 rounded bg-light">
-        <div class="form-group">
-            <label asp-for="Input.UserName" class="font-weight-bold">Username</label>
-            <input asp-for="Input.UserName" class="form-control" placeholder="Enter your username" />
-            <span asp-validation-for="Input.Username" class="text-danger"></span>
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="text-uppercase text-center">Registration Form</h5>
+            </div>
+            <div class="card-body">
+                <form asp-page="./Register">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-success text-uppercase rounded-0">Register</button>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Input.Email" class="font-weight-bold">E-mail</label>
-            <input asp-for="Input.Email" class="form-control" placeholder="Enter your email" />
-            <span asp-validation-for="Input.Email" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.Password" class="font-weight-bold">Password</label>
-            <input asp-for="Input.Password" class="form-control" placeholder="Enter your password" />
-            <span asp-validation-for="Input.Password" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.ConfirmPassword" class="font-weight-bold">Confirm Password</label>
-            <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirm your password" />
-            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-        </div>
-        <button><a href="/Index" class="btn btn-success">Register</a></button>
-    </form>
-
-    <div class="text-center mt-3">
-        <p>Already have an account? 
-        <button><a href="/Account/Login" class="btn btn-secondary">Login Here</a></button>
-            </a>
-        </p>
     </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

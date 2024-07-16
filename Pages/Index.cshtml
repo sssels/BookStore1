@@ -1,14 +1,18 @@
 ﻿@page
 @model BookStore1.Pages.IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home Page";
 }
-<form asp-antiforgery="true" method="post" class="shadow p-4 rounded bg-light">
-<div class="text-center">
-    <h1 class="display-4">BookStore</h1>
-    <p>Welcome to Book Store</p>
-    <button><a href="/Account/Register" class="btn btn-primary">Register</a></button>
-    <button><a href="/Account/Login" class="btn btn-secondary">Login</a></button>
-    <button><a href="/Books/Index" class="btn btn-success">View Books</a></button>
-    <button><a href="/Cart/Cart" class="btn btn-success">Cart</a></button>
+
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to BookStore!</h1>
+    <p class="lead">Your one-stop shop for all your book needs.</p>
+    <hr class="my-4">
+    <p>Get started by exploring our features:</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" asp-page="/Account/Register" role="button">Register</a>
+        <a class="btn btn-secondary btn-lg" asp-page="/Account/Login" role="button">Login</a>
+        <a class="btn btn-success btn-lg" asp-page="/Books/Index" role="button">View Books</a>
+        <a class="btn btn-info btn-lg" asp-page="/Cart/Index" role="button">Cart</a>
+    </p>
 </div>

@@ -17,7 +17,7 @@ namespace BookStore1.Pages.Publishers
         }
 
         [BindProperty]
-        public Publisher Publisher { get; set; }
+        public BookStore1.Models.Publisher Publisher { get; set; }
 
         public IActionResult OnGet()
         {
