@@ -1,0 +1,53 @@
+@page
+@model BookStore1.Pages.BookSearchModel
+@{
+    ViewData["Title"] = "Book Search";
+}
+
+<h1>Book Search</h1>
+
+<form method="get">
+    <div class="form-group">
+        <label for="searchString">Search:</label>
+        <input type="text" id="searchString" name="searchString" value="@Model.SearchString" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+@if (Model.Bookz != null && Model.Bookz.Any())
+{
+    <h2>Search Results:</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Publisher</th>
+                <th>Price</th>
+                <th>In Stock</th>
+                <th>Added Date</th>
+                <th>Updated Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model.Bookz)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.Genre</td>
+                    <td>@book.Publisher</td>
+                    <td>@book.Price</td>
+                    <td>@book.InStock</td>
+                    <td>@book.AddedDate.ToShortDateString()</td>
+                    <td>@book.UpdatedDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (!string.IsNullOrEmpty(Model.SearchString))
+{
+    <p>No books found matching your search criteria.</p>
+}

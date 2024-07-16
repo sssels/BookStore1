@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace BookStore1.Controllers
 {
-    public class AccountController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AccountController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -16,59 +18,48 @@ namespace BookStore1.Controllers
             _signInManager = signInManager;
         }
 
-        public IActionResult Register()
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterInputModel model)
         {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterInputModel model)
-        {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = model.Username, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                return BadRequest(ModelState);
             }
-            return View(model);
-        }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginInputModel model)
-        {
-            if (ModelState.IsValid)
+            var user = new IdentityUser { UserName = model.Username, Email = model.Email };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                ModelState.AddModelError("", "Invalid login attempt.");
+                return Ok();
             }
-            return View(model);
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+            return BadRequest(ModelState);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            return Unauthorized("Invalid login attempt.");
+        }
+
+        [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return Ok();
         }
     }
 }

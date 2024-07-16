@@ -1,0 +1,16 @@
+@page
+@model BookStore1.Pages.Cart.RemoveFromCartModel
+@{
+    ViewData["Title"] = "Remove from Cart";
+}
+
+<h2>Remove from Cart</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="BookId">Book ID</label>
+        <input asp-for="BookId" class="form-control" />
+        <span asp-validation-for="BookId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Remove from Cart</button>
+</form>

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj": {}
+    "C:\\Users\\selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj": {
+    "C:\\Users\\selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj",
+        "projectUniqueName": "C:\\Users\\selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj",
         "projectName": "BookStore1",
-        "projectPath": "C:\\Users\\Selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj",
-        "packagesPath": "C:\\Users\\Selen\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Selen\\Documents\\GitHub\\BookStore1\\obj\\",
+        "projectPath": "C:\\Users\\selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj",
+        "packagesPath": "C:\\Users\\selen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\selen\\Documents\\GitHub\\BookStore1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Selen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\selen\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -52,6 +52,10 @@
               "version": "[2.2.0, )"
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
               "target": "Package",
               "version": "[8.0.7, )"
             },

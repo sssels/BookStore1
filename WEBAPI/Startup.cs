@@ -157,9 +157,12 @@ namespace BookStore1
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
 
             // Initialize roles and admin user
             RoleInitializer.InitializeAsync(serviceProvider).Wait();

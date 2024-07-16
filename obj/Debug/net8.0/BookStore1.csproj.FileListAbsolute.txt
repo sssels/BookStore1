@@ -623,3 +623,5 @@ C:\Users\Selen\Documents\GitHub\BookStore1\obj\Debug\net8.0\refint\BookStore1.dl
 C:\Users\Selen\Documents\GitHub\BookStore1\obj\Debug\net8.0\BookStore1.pdb
 C:\Users\Selen\Documents\GitHub\BookStore1\obj\Debug\net8.0\BookStore1.genruntimeconfig.cache
 C:\Users\Selen\Documents\GitHub\BookStore1\obj\Debug\net8.0\ref\BookStore1.dll
+C:\Users\selen\Documents\GitHub\BookStore1\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\selen\Documents\GitHub\BookStore1\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Embedded.dll

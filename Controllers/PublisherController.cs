@@ -1,44 +1,52 @@
+using BookStore1.Data;
 using BookStore1.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 using System.Threading.Tasks;
+
+#nullable disable
 
 namespace BookStore1.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class PublishersController : Controller
+    public class PublisherController : Controller
     {
-        private readonly IPublisherService _publisherService;
+        private readonly ApplicationDbContext _context;
 
-        public PublishersController(IPublisherService publisherService)
+        public PublisherController(ApplicationDbContext context)
         {
-            _publisherService = publisherService;
+            _context = context;
         }
 
+        // GET: Publisher
         public async Task<IActionResult> Index()
         {
-            var publishers = await _publisherService.GetAllPublishersAsync();
-            return View(publishers);
+            return View(await _context.Publishers.ToListAsync());
         }
 
+        // GET: Publisher/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        // POST: Publisher/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Publisher publisher) // Removed Address if not needed
+        public async Task<IActionResult> Create([Bind("Id,Name")] Publisher publisher)
         {
             if (ModelState.IsValid)
             {
-                await _publisherService.AddPublisherAsync(publisher);
+                _context.Add(publisher);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(publisher);
         }
 
+        // GET: Publisher/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -46,7 +54,7 @@ namespace BookStore1.Controllers
                 return NotFound();
             }
 
-            var publisher = await _publisherService.GetPublisherByIdAsync(id.Value);
+            var publisher = await _context.Publishers.FindAsync(id);
             if (publisher == null)
             {
                 return NotFound();
@@ -54,9 +62,10 @@ namespace BookStore1.Controllers
             return View(publisher);
         }
 
+        // POST: Publisher/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Publisher publisher) // Removed Address if not needed
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Publisher publisher)
         {
             if (id != publisher.Id)
             {
@@ -67,11 +76,12 @@ namespace BookStore1.Controllers
             {
                 try
                 {
-                    await _publisherService.UpdatePublisherAsync(publisher);
+                    _context.Update(publisher);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await PublisherExists(publisher.Id))
+                    if (!PublisherExists(publisher.Id))
                     {
                         return NotFound();
                     }
@@ -85,6 +95,7 @@ namespace BookStore1.Controllers
             return View(publisher);
         }
 
+        // GET: Publisher/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -92,7 +103,8 @@ namespace BookStore1.Controllers
                 return NotFound();
             }
 
-            var publisher = await _publisherService.GetPublisherByIdAsync(id.Value);
+            var publisher = await _context.Publishers
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (publisher == null)
             {
                 return NotFound();
@@ -101,18 +113,20 @@ namespace BookStore1.Controllers
             return View(publisher);
         }
 
+        // POST: Publisher/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _publisherService.DeletePublisherAsync(id);
+            var publisher = await _context.Publishers.FindAsync(id);
+            _context.Publishers.Remove(publisher);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task<bool> PublisherExists(int id)
+        private bool PublisherExists(int id)
         {
-            var publisher = await _publisherService.GetPublisherByIdAsync(id);
-            return publisher != null;
+            return _context.Publishers.Any(e => e.Id == id);
         }
     }
 }
