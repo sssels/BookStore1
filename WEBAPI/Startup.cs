@@ -29,6 +29,7 @@ namespace BookStore1
             // Configure DbContext
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllers();
 
             // Configure Identity
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -142,6 +143,7 @@ namespace BookStore1
             app.UseAuthorization();
 
             app.UseCors("AllowAll");
+            
 
             app.UseEndpoints(endpoints =>
             {
@@ -149,6 +151,7 @@ namespace BookStore1
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
 
 

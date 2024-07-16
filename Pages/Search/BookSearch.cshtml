@@ -14,7 +14,7 @@
     <button type="submit" class="btn btn-primary">Search</button>
 </form>
 
-@if (Model.Bookz != null && Model.Bookz.Any())
+@if (Model.Books != null && Model.Books.Any())
 {
     <h2>Search Results:</h2>
     <table class="table">
@@ -31,7 +31,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var book in Model.Bookz)
+            @foreach (var book in Model.Books)
             {
                 <tr>
                     <td>@book.Title</td>

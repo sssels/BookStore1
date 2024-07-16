@@ -1,17 +1,16 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using BookStore1.Data;
 using BookStore1.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using System.Linq;
-using System.Threading.Tasks;
 
 #nullable disable
 
 namespace BookStore1.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    public class BooksController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BooksController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
@@ -20,113 +19,34 @@ namespace BookStore1.Controllers
             _context = context;
         }
 
-        // GET: Books
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Bookz.ToListAsync());
-        }
-
-        // GET: Books/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Books/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Author,Title,Genre,Price,InStock,Publisher,AddedDate,UpdatedDate")] Book book)
+        public async Task<IActionResult> CreateBook([FromBody] Book book)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(book);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(book);
-        }
-
-        // GET: Books/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            var book = await _context.Bookz.FindAsync(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-            return View(book);
-        }
+            book.AddedDate = DateTime.UtcNow;
+            book.UpdatedDate = DateTime.UtcNow;
 
-        // POST: Books/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Author,Title,Genre,Price,InStock,Publisher,AddedDate,UpdatedDate")] Book book)
-        {
-            if (id != book.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(book);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookExists(book.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(book);
-        }
-
-        // GET: Books/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var book = await _context.Bookz
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-
-            return View(book);
-        }
-
-        // POST: Books/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var book = await _context.Bookz.FindAsync(id);
-            _context.Bookz.Remove(book);
+            _context.Books.Add(book);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
         }
 
-        private bool BookExists(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetBook(int id)
         {
-            return _context.Bookz.Any(e => e.Id == id);
+            var book = await _context.Books.FindAsync(id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(book);
         }
     }
 }

@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BookStore1.Data;
 using BookStore1.Models;
+
 #nullable disable
+
 namespace BookStore1.Pages.Books
 {
     public class CreateModel : PageModel
@@ -34,7 +36,7 @@ namespace BookStore1.Pages.Books
             Book.AddedDate = DateTime.UtcNow;
             Book.UpdatedDate = DateTime.UtcNow;
 
-            _context.Bookz.Add(Book);
+            _context.Books.Add(Book);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

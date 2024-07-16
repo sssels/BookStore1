@@ -9,6 +9,6 @@ namespace BookStore1.Models
         [Required]
         public string Name { get; set; }
 
-        // Eğer ek özellikler varsa buraya ekleyebilirsiniz.
+        public string Location {get; set;}
     }
 }

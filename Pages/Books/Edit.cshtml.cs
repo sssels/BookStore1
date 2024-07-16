@@ -26,7 +26,7 @@ namespace BookStore1.Pages.Books
                 return NotFound();
             }
 
-            Book = await _context.Bookz.FindAsync(id);
+            Book = await _context.Books.FindAsync(id);
 
             if (Book == null)
             {
@@ -66,7 +66,7 @@ namespace BookStore1.Pages.Books
 
         private bool BookExists(int id)
         {
-            return _context.Bookz.Any(e => e.Id == id);
+            return _context.Books.Any(e => e.Id == id);
         }
     }
 }

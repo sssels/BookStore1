@@ -2,13 +2,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
+
 namespace BookStore1.Models
 {
     [Table("user")]
     public class User
     {
         [Key]
-        public int Id { get; set; } // Id alanını ekleyin
+        public int Id { get; set; } 
 
         [Required]
         [StringLength(100)]
@@ -21,5 +22,6 @@ namespace BookStore1.Models
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        
     }
 }

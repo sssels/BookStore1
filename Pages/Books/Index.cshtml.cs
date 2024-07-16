@@ -19,7 +19,7 @@ namespace BookStore1.Pages.Books
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Bookz = await _context.Bookz.ToListAsync();
+            Bookz = await _context.Books.ToListAsync();
             return Page();
         }
     }

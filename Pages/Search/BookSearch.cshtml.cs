@@ -17,7 +17,7 @@ namespace BookStore1.Pages
             _context = context;
         }
 
-        public IList<Book> Bookz { get; set; }
+        public IList<Book> Books { get; set; }
         public string SearchString { get; set; }
 
         public async Task OnGetAsync(string searchString)
@@ -25,7 +25,7 @@ namespace BookStore1.Pages
             SearchString = searchString;
 
             // LINQ sorgusuyla kitapları ara
-            var booksQuery = from b in _context.Bookz
+            var booksQuery = from b in _context.Books
                              select b;
 
             if (!string.IsNullOrEmpty(searchString))
@@ -36,7 +36,7 @@ namespace BookStore1.Pages
                     b.Author.Contains(searchString));
             }
 
-            Bookz = await booksQuery.ToListAsync();
+            Books = await booksQuery.ToListAsync();
         }
     }
 }
