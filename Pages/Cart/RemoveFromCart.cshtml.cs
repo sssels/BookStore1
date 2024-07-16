@@ -1,20 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using BookStore1.Services;
+using BookStore1.Data;
+using BookStore1.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 #nullable disable
 namespace BookStore1.Pages.Cart
 {
     public class RemoveFromCartModel : PageModel
     {
-        private readonly ICartService _cartService;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<RemoveFromCartModel> _logger;
 
-        public RemoveFromCartModel(ICartService cartService, ILogger<RemoveFromCartModel> logger)
+        public RemoveFromCartModel(ApplicationDbContext context, ILogger<RemoveFromCartModel> logger)
         {
-            _cartService = cartService;
+            _context = context;
             _logger = logger;
         }
 
@@ -32,22 +35,34 @@ namespace BookStore1.Pages.Cart
                 return Page();
             }
 
-            var userId = User.Identity.Name; // Example of retrieving the user ID, adjust as necessary
+            var userId = User.Identity.Name;
             if (string.IsNullOrEmpty(userId))
             {
                 _logger.LogError("User ID is null or empty.");
-                return RedirectToPage("/Error"); // Or handle the error appropriately
+                return RedirectToPage("/Error");
             }
 
             try
             {
-                _cartService.RemoveFromCart(userId, BookId);
-                _logger.LogInformation("Book removed from cart successfully.");
+                var cart = await _context.Carts
+                    .Include(c => c.CartItems) // Ensure CartItems are included
+                    .FirstOrDefaultAsync(c => c.UserId == userId);
+
+                if (cart != null)
+                {
+                    var cartItem = cart.CartItems.FirstOrDefault(ci => ci.BookId == BookId);
+                    if (cartItem != null)
+                    {
+                        _context.CartItems.Remove(cartItem);
+                        await _context.SaveChangesAsync();
+                        _logger.LogInformation("Book removed from cart successfully.");
+                    }
+                }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while removing the book from the cart.");
-                return RedirectToPage("/Error"); // Or handle the error appropriately
+                return RedirectToPage("/Error");
             }
 
             return RedirectToPage("./Cart");

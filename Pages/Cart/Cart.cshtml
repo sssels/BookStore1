@@ -6,7 +6,7 @@
 
 <h2>Your Cart</h2>
 
-@if (Model.Cart != null && Model.Cart.Items.Any())
+@if (Model.Cart != null && Model.Cart.CartItems.Any())
 {
     <table class="table">
         <thead>
@@ -19,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model.Cart.Items)
+        @foreach (var item in Model.Cart.CartItems)
         {
             <tr>
                 <td>@item.Title</td>
@@ -37,7 +37,7 @@
         </tbody>
     </table>
 
-    <div>Total: @(Model.Cart.Items.Sum(item => item.Price * item.Quantity)).ToString("C", new System.Globalization.CultureInfo("tr-TR"))</div>
+    <div>Total: @(Model.Cart.CartItems.Sum(item => item.Price * item.Quantity)).ToString("C", new System.Globalization.CultureInfo("tr-TR"))</div>
 
     <div>
         <form method="post" asp-page-handler="ClearCart" class="d-inline">

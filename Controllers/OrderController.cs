@@ -1,27 +1,38 @@
-using BookStore1.Models;
-using BookStore1.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using BookStore1.Data;
+using BookStore1.Models;
+using System;
+using System.Linq;
 using System.Security.Claims;
-#nullable disable
+
 namespace BookStore1.Controllers
 {
     [Authorize]
     public class OrderController : Controller
     {
-        private readonly ICartService _cartService;
-        private readonly IOrderService _orderService;
+        private readonly ApplicationDbContext _context;
+        private readonly ILogger<OrderController> _logger;
 
-        public OrderController(ICartService cartService, IOrderService orderService)
+        public OrderController(ApplicationDbContext context, ILogger<OrderController> logger)
         {
-            _cartService = cartService;
-            _orderService = orderService;
+            _context = context;
+            _logger = logger;
         }
 
         public IActionResult Checkout()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var cart = _cartService.GetCart(userId);
+            var cart = _context.Carts
+                .FirstOrDefault(c => c.UserId == userId);
+            
+            if (cart == null)
+            {
+                _logger.LogWarning("Cart not found for user: {UserId}", userId);
+                return RedirectToAction("Index", "Home");
+            }
+
             return View(cart);
         }
 
@@ -30,9 +41,51 @@ namespace BookStore1.Controllers
         public IActionResult CheckoutConfirmed()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var cart = _cartService.GetCart(userId);
-            _orderService.CreateOrder(userId, cart);
-            return RedirectToAction("Index", "Home");
+            var cart = _context.Carts
+                .FirstOrDefault(c => c.UserId == userId);
+
+            if (cart == null)
+            {
+                _logger.LogWarning("Cart not found for user: {UserId}", userId);
+                return RedirectToAction("Index", "Home");
+            }
+
+            try
+            {
+                var order = new Order
+                {
+                    UserId = userId,
+                    OrderDate = DateTime.UtcNow,
+                    TotalAmount = cart.CartItems.Sum(ci => ci.Quantity * ci.Book.Price)
+                };
+
+                _context.Orders.Add(order);
+
+                foreach (var cartItem in cart.CartItems)
+                {
+                    var orderDetail = new OrderDetail
+                    {
+                        Order = order,
+                        BookId = cartItem.BookId,
+                        Quantity = cartItem.Quantity,
+                        Price = cartItem.Book.Price
+                    };
+
+                    _context.OrderDetails.Add(orderDetail);
+                }
+
+                _context.Carts.Remove(cart);
+                _context.SaveChanges();
+
+                _logger.LogInformation("Order created successfully for user: {UserId}", userId);
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while processing the order.");
+                return RedirectToAction("Index", "Home"); // Or handle the error appropriately
+            }
         }
     }
 }

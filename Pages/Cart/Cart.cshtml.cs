@@ -2,24 +2,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Security.Claims;
+using BookStore1.Data;
 using BookStore1.Models;
-using BookStore1.Services;
+using Microsoft.EntityFrameworkCore;
 #nullable disable
 namespace BookStore1.Pages
 {
     public class CartModel : PageModel
     {
-        private readonly ICartService _cartService;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<CartModel> _logger;
 
-        public CartModel(ICartService cartService, ILogger<CartModel> logger)
+        public CartModel(ApplicationDbContext context, ILogger<CartModel> logger)
         {
-            _cartService = cartService;
+            _context = context;
             _logger = logger;
         }
 
-        public BookStore1.Models.Cart Cart { get; set; } // Fully qualify the Cart type
+        public BookStore1.Models.Cart Cart { get; set; }
 
         public void OnGet()
         {
@@ -29,17 +31,18 @@ namespace BookStore1.Pages
                 if (string.IsNullOrEmpty(userId))
                 {
                     _logger.LogError("User ID is null or empty.");
-                    // Return an appropriate response or error page
-                    RedirectToPage("/Error"); 
+                    RedirectToPage("/Error");
                     return;
                 }
 
-                Cart = _cartService.GetCart(userId);
+                Cart = _context.Carts
+                    .Include(c => c.CartItems)
+                    .ThenInclude(ci => ci.Book)
+                    .FirstOrDefault(c => c.UserId == userId);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while getting the cart.");
-                // Return an error page
                 RedirectToPage("/Error");
             }
         }
@@ -49,7 +52,20 @@ namespace BookStore1.Pages
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                _cartService.RemoveFromCart(userId, bookId);
+                var cart = _context.Carts
+                    .Include(c => c.CartItems)
+                    .FirstOrDefault(c => c.UserId == userId);
+
+                if (cart != null)
+                {
+                    var cartItem = cart.CartItems.FirstOrDefault(ci => ci.BookId == bookId);
+                    if (cartItem != null)
+                    {
+                        _context.CartItems.Remove(cartItem);
+                        _context.SaveChanges();
+                    }
+                }
+
                 return RedirectToPage();
             }
             catch (Exception ex)
@@ -64,7 +80,16 @@ namespace BookStore1.Pages
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                _cartService.ClearCart(userId);
+                var cart = _context.Carts
+                    .Include(c => c.CartItems)
+                    .FirstOrDefault(c => c.UserId == userId);
+
+                if (cart != null)
+                {
+                    _context.CartItems.RemoveRange(cart.CartItems);
+                    _context.SaveChanges();
+                }
+
                 return RedirectToPage();
             }
             catch (Exception ex)
@@ -79,8 +104,19 @@ namespace BookStore1.Pages
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                _cartService.Checkout(userId);
-                return RedirectToPage("/Index"); // Redirect to the home page after checkout
+                var cart = _context.Carts
+                    .Include(c => c.CartItems)
+                    .FirstOrDefault(c => c.UserId == userId);
+
+                if (cart != null)
+                {
+                    // Burada ödeme işlemleri gerçekleştirilebilir
+
+                    _context.CartItems.RemoveRange(cart.CartItems);
+                    _context.SaveChanges();
+                }
+
+                return RedirectToPage("/Index"); // Checkout sonrası ana sayfaya yönlendirme
             }
             catch (Exception ex)
             {

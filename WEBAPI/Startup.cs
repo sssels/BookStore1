@@ -9,8 +9,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using BookStore1.Data;
 using BookStore1.Models;
-using BookStore1.Services;
-using System;
 using System.Text;
 
 #nullable disable
@@ -112,16 +110,6 @@ namespace BookStore1
                             .AllowAnyHeader();
                     });
             });
-
-            // Add scoped services
-            services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<IBookService, BookService>();
-            services.AddScoped<AuthService>();
-            services.AddScoped<UserService>();
-            services.AddScoped<ICartService, CartService>();
-            services.AddScoped<IPublisherRepository, PublisherRepository>();
-            services.AddScoped<IPublisherService, PublisherService>();
-            
 
             // Add Controllers and Razor Pages
             services.AddControllersWithViews();

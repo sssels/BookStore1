@@ -3,23 +3,27 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BookStore1.Models;
+using Microsoft.EntityFrameworkCore;
+using BookStore1.Data;
+using System.Linq; 
+
 #nullable disable
 namespace BookStore1.Pages
 {
     public class PublisherModel : PageModel
     {
-        private readonly IPublisherService _publisherService;
+        private readonly ApplicationDbContext _context;
 
-        public PublisherModel(IPublisherService publisherService)
+        public PublisherModel(ApplicationDbContext context)
         {
-            _publisherService = publisherService;
+            _context = context;
         }
 
         public IEnumerable<Publisher> Publishers { get; set; }
 
         public async Task OnGetAsync()
         {
-            Publishers = await _publisherService.GetAllPublishersAsync();
+            Publishers = await _context.Publishers.ToListAsync();
         }
     }
 }

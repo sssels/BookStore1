@@ -1,18 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using BookStore1.Services;
+using System;
+using System.Linq;
+using BookStore1.Data;
+using BookStore1.Models;
 #nullable disable
 namespace BookStore1.Pages.Cart
 {
     public class CartModel : PageModel
     {
-        private readonly ICartService _cartService;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<CartModel> _logger;
 
-        public CartModel(ICartService cartService, ILogger<CartModel> logger)
+        public CartModel(ApplicationDbContext context, ILogger<CartModel> logger)
         {
-            _cartService = cartService;
+            _context = context;
             _logger = logger;
         }
 
@@ -27,7 +30,18 @@ namespace BookStore1.Pages.Cart
 
             try
             {
-                var cart = _cartService.GetCart(userId);
+                var cart = _context.Carts
+                    .Where(c => c.UserId == userId)
+                    .FirstOrDefault();
+
+                if (cart == null)
+                {
+                    // Handle case where cart is not found for the user
+                    return RedirectToPage("/Error"); // Or redirect to a page indicating no cart found
+                }
+
+                // Optionally, load cart items here if needed
+
                 // Handle the retrieved cart (e.g., assign it to a property for the view)
             }
             catch (Exception ex)

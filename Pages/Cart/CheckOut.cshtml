@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model.Items)
+    @foreach (var item in Model.CartItems)
     {
         <tr>
             <td>@item.Title</td>
@@ -24,7 +24,7 @@
     </tbody>
 </table>
 
-<div>Total: @(Model.Items.Sum(item => item.Price * item.Quantity))</div>
+<div>Total: @(Model.CartItems.Sum(item => item.Price * item.Quantity))</div>
 
 <form asp-action="CheckoutConfirmed">
     <button type="submit" class="btn btn-primary">Confirm Order</button>
