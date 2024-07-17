@@ -1,61 +1,69 @@
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using BookStore1.Data;
+using BookStore1.Models;
 
-namespace BookStore1.Pages
+#nullable disable
+
+namespace BookStore1.Pages.Account
 {
-    public class RegModel : PageModel
+    public class RegisterModel : PageModel
     {
-        private readonly ILogger<RegModel> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public RegModel(ILogger<RegModel> logger)
+        public RegisterModel(ApplicationDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         [BindProperty]
-        [Required(ErrorMessage = "Username is required")]
-        public string Username { get; set; } = "";
+        public string Username { get; set; }
 
         [BindProperty]
-        [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Invalid email address")]
-        public string Email { get; set; } = "";
+        public string Email { get; set; }
 
         [BindProperty]
-        [Required(ErrorMessage = "Password is required")]
-        public string Password { get; set; } = "";
+        public string Password { get; set; }
 
         [BindProperty]
-        [Required(ErrorMessage = "Confirm Password is required")]
-        [Compare("Password", ErrorMessage = "Passwords do not match")]
-        public string ConfirmPassword { get; set; } = "";
+        public string ConfirmPassword { get; set; }
 
-        public string successMessage = "";
-        public string errorMessage = "";
+        public string ErrorMessage { get; set; }
+        public string SuccessMessage { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            return Page();
         }
 
-        public void OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                errorMessage = "Data validation failed: " + string.Join("; ", errors);
-                _logger.LogError(errorMessage);
-                return;
+                ErrorMessage = "Please correct the errors in the form.";
+                return Page();
             }
 
-            successMessage = "Successfully registered";
-            _logger.LogInformation(successMessage);
-            Username = "";
-            Email = "";
-            Password = "";
-            ConfirmPassword = "";
-            ModelState.Clear();
+            if (Password != ConfirmPassword)
+            {
+                ErrorMessage = "Passwords do not match.";
+                return Page();
+            }
+
+            var user = new User
+            {
+                Username = Username,
+                Email = Email,
+                Password = Password // Note: Storing passwords as plain text is insecure. Use hashing in production.
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            SuccessMessage = "Registration successful!";
+            return Page();
         }
     }
 }

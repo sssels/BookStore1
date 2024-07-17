@@ -29,6 +29,7 @@ namespace BookStore1
             // Configure DbContext
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllersWithViews();
             services.AddControllers();
             services.AddHttpClient();
             services.AddLogging();

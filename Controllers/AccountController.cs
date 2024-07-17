@@ -1,52 +1,43 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using BookStore1.Data;
+using BookStore1.Models;
 using BookStore1.ViewModels;
+
+#nullable disable
 
 namespace BookStore1.Controllers
 {
-    public class AccountController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AccountController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly ApplicationDbContext _context;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(ApplicationDbContext context)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            _context = context;
         }
 
-        public IActionResult Register()
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new IdentityUser
-                {
-                    UserName = model.Email,
-                    Email = model.Email
-                };
-                var result = await userManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
-                {
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                return BadRequest(ModelState);
             }
-            return View();
+
+            var user = new User
+            {
+                Username = model.Username,
+                Email = model.Email,
+                Password = model.Password // Note: Storing passwords as plain text is insecure. Use hashing in production.
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Registration successful" });
         }
     }
 }

@@ -1,5 +1,5 @@
 @page
-@model BookStore1.Pages.RegModel
+@model BookStore1.Pages.Account.RegisterModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,17 +11,17 @@
 <body>
     <h2>Register</h2>
 
-    @if (!string.IsNullOrEmpty(Model.errorMessage))
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
         <div style="color:red;">
-            @Model.errorMessage
+            @Model.ErrorMessage
         </div>
     }
 
-    @if (!string.IsNullOrEmpty(Model.successMessage))
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
     {
         <div style="color:green;">
-            @Model.successMessage
+            @Model.SuccessMessage
         </div>
     }
 

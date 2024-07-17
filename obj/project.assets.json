@@ -6688,6 +6688,7 @@
       "Pomelo.EntityFrameworkCore.MySql >= 8.0.2",
       "Swashbuckle.AspNetCore >= 6.6.2",
       "System.Net.Http.Json >= 8.0.0",
+      "System.Threading.Tasks >= 4.3.0",
       "bootstrap >= 5.3.3"
     ]
   },
@@ -6804,6 +6805,10 @@
           "System.Net.Http.Json": {
             "target": "Package",
             "version": "[8.0.0, )"
+          },
+          "System.Threading.Tasks": {
+            "target": "Package",
+            "version": "[4.3.0, )"
           },
           "bootstrap": {
             "target": "Package",
