@@ -1,10 +1,10 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using BookStore1.Data;
 using BookStore1.Models;
-#nullable disable
+
 namespace BookStore1.Pages.Books
 {
     public class DeleteModel : PageModel

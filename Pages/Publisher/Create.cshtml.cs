@@ -1,10 +1,10 @@
-using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BookStore1.Models;
-using BookStore1.Data; // Veritabanı bağlamınızı temsil eden namespace
+using BookStore1.Data;
 using System.Threading.Tasks;
-#nullable disable
+
 namespace BookStore1.Pages.Publishers
 {
     public class CreateModel : PageModel
@@ -17,7 +17,7 @@ namespace BookStore1.Pages.Publishers
         }
 
         [BindProperty]
-        public BookStore1.Models.Publisher Publisher { get; set; }
+        public Publisher Publisher { get; set; }
 
         public IActionResult OnGet()
         {

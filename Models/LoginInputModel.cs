@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-#nullable disable
+
 namespace BookStore1.Models
 {
     public class LoginInputModel
@@ -13,7 +13,6 @@ namespace BookStore1.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
 }

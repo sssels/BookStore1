@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using BookStore1.Data;
 using BookStore1.Models;
-using System.ComponentModel.DataAnnotations;
-#nullable disable
+
 namespace BookStore1.Pages.Books
 {
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+
         public EditModel(ApplicationDbContext context)
         {
             _context = context;
@@ -43,7 +43,7 @@ namespace BookStore1.Pages.Books
                 return Page();
             }
 
-            _context.Attach(Book).State = EntityState.Modified;
+            _context.Entry(Book).State = EntityState.Modified;
 
             try
             {

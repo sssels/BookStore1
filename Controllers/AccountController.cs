@@ -1,10 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using BookStore1.Data;
+using Microsoft.AspNetCore.Identity;
 using BookStore1.Models;
 using BookStore1.ViewModels;
-
-#nullable disable
 
 namespace BookStore1.Controllers
 {
@@ -12,11 +10,13 @@ namespace BookStore1.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AccountController(ApplicationDbContext context)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
-            _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpPost("Register")]
@@ -30,14 +30,41 @@ namespace BookStore1.Controllers
             var user = new User
             {
                 Username = model.Username,
-                Email = model.Email,
-                Password = model.Password // Note: Storing passwords as plain text is insecure. Use hashing in production.
+                Email = model.Email
             };
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            var result = await _userManager.CreateAsync(user, model.Password);
 
-            return Ok(new { Message = "Registration successful" });
+            if (result.Succeeded)
+            {
+                return Ok(new { Message = "Registration successful" });
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return BadRequest(ModelState);
+        }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                return Ok(new { Message = "Login successful" });
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return BadRequest(ModelState);
         }
     }
 }
