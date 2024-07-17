@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using BookStore1.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-#nullable disable
+using System.ComponentModel.DataAnnotations;
+using BookStore1.Models;
+
 namespace BookStore1.Pages.Account
 {
     public class LoginModel : PageModel
@@ -43,6 +44,20 @@ namespace BookStore1.Pages.Account
 
             ModelState.AddModelError(string.Empty, "Geçersiz giriş denemesi.");
             return Page();
+        }
+
+        public class LoginInputModel
+        {
+            [BindProperty]
+            [Required]
+            public string Username { get; set; }
+
+            [BindProperty]
+            [Required]
+            [DataType(DataType.Password)]
+            public string Password { get; set; }
+
+            public bool RememberMe { get; set; }
         }
     }
 }
