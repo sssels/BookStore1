@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BookStore1.Models;
+using BookStore1.Models; // Publisher sınıfının bulunduğu namespace
 using BookStore1.Data;
-using System.Threading.Tasks;
 
 namespace BookStore1.Pages.Publishers
 {
@@ -17,7 +16,7 @@ namespace BookStore1.Pages.Publishers
         }
 
         [BindProperty]
-        public Publisher Publisher { get; set; }
+        public BookStore1.Models.Publisher Publisher { get; set; } // Tam kalifiye ad kullanımı
 
         public IActionResult OnGet()
         {

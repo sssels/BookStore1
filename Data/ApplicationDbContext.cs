@@ -16,6 +16,7 @@ namespace BookStore1.Data
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<Payment> Payments { get; set; } 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

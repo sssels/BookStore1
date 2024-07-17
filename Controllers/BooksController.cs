@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BookStore1.Data;
 using BookStore1.Models;
@@ -47,6 +49,13 @@ namespace BookStore1.Controllers
             }
 
             return Ok(book);
+        }
+
+        // HTTP GET api/books
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+        {
+            return await _context.Books.ToListAsync();
         }
 
         // HTTP PUT api/books/{id}
