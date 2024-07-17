@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using BookStore1.ViewModels;
 
-namespace RegistrationFormCore.Controllers
+namespace BookStore1.Controllers
 {
     public class AccountController : Controller
     {

@@ -1,53 +1,48 @@
 @page
 @model BookStore1.Pages.RegModel
-@{
-    ViewData["Title"] = "Register";
-}
 
-<div class="row">
-    <div class="col-md-6 mx-auto">
-        <div class="card">
-            <div class="card-header bg-danger text-white">
-                <h5 class="text-uppercase text-center">Registration Form</h5>
-                @if (Model.errorMessage.Length>0)
-                {
-                    <div class ='alert alert-warning alert-dismissible fade show' role='alert'>
-                        <strong>@Model.errorMessage</strong>
-                    </div>
-                }
-                @if (Model.succesMessage.Length>0)
-                {
-                    <div class ='alert alert-warning alert-dismissible fade show' role='alert'>
-                        <strong>@Model.succesMessage</strong>
-                    </div>
-                }                
-            </div>
-            <div class="card-body">
-                <form method = "post">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="Username"></label>
-                        <input class ="form-control" asp-for="Username" />
-                        <span asp-validation-for="Username" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Email"></label>
-                        <input class ="form-control" asp-for="Email" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Password"></label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ConfirmPassword"></label>
-                        <input class="form-control" asp-for="ConfirmPassword" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
-                    <button type="submit" class="btn btn-sm btn-success text-uppercase rounded-0">Register</button>
-                </form>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h2>Register</h2>
+
+    @if (!string.IsNullOrEmpty(Model.errorMessage))
+    {
+        <div style="color:red;">
+            @Model.errorMessage
         </div>
-    </div>
-</div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.successMessage))
+    {
+        <div style="color:green;">
+            @Model.successMessage
+        </div>
+    }
+
+    <form method="post">
+        <div>
+            <label for="Username">Username:</label>
+            <input type="text" id="Username" name="Username" value="@Model.Username" required>
+        </div>
+        <div>
+            <label for="Email">Email:</label>
+            <input type="email" id="Email" name="Email" value="@Model.Email" required>
+        </div>
+        <div>
+            <label for="Password">Password:</label>
+            <input type="password" id="Password" name="Password" value="@Model.Password" required>
+        </div>
+        <div>
+            <label for="ConfirmPassword">Confirm Password:</label>
+            <input type="password" id="ConfirmPassword" name="ConfirmPassword" value="@Model.ConfirmPassword" required>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

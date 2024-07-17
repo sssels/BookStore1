@@ -30,6 +30,8 @@ namespace BookStore1
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
+            services.AddHttpClient();
+            services.AddLogging();
 
             // Configure Identity
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -158,5 +160,6 @@ namespace BookStore1
             // Initialize roles and admin user
             RoleInitializer.InitializeAsync(serviceProvider).Wait();
         }
+        
     }
 }
