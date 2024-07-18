@@ -1,24 +1,27 @@
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Identity;
 using BookStore1.Models;
 
 namespace BookStore1.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager)
+        public LoginModel(IHttpClientFactory clientFactory)
         {
-            _signInManager = signInManager;
+            _clientFactory = clientFactory;
         }
 
         [BindProperty]
-        public LoginInputModel LoginInput { get; set; }
+        public LoginViewModel Input { get; set; }
 
-        public string ErrorMessage { get; set; }
+        public string Message { get; set; }
 
         public void OnGet()
         {
@@ -31,15 +34,26 @@ namespace BookStore1.Pages.Account
                 return Page();
             }
 
-            var result = await _signInManager.PasswordSignInAsync(LoginInput.Username, LoginInput.Password, LoginInput.RememberMe, lockoutOnFailure: false);
+            var client = _clientFactory.CreateClient();
+            client.BaseAddress = new System.Uri("https://localhost:5289/"); // API base URL
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            if (result.Succeeded)
+            var content = new StringContent(JsonSerializer.Serialize(Input), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("api/account/login", content);
+
+            if (response.IsSuccessStatusCode)
             {
-                return RedirectToPage("/Index");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Message = "Login successful!";
+                // Redirect to a different page or perform other actions as needed
+                return RedirectToPage("/Index"); // Redirect to home page or another page
             }
-
-            ErrorMessage = "Invalid login attempt.";
-            return Page();
+            else
+            {
+                Message = "Invalid username or password";
+                return Page();
+            }
         }
     }
 }

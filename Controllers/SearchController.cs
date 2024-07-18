@@ -24,15 +24,14 @@ namespace BookStore1.Controllers
         public async Task<ActionResult<IEnumerable<Book>>> SearchBooks([FromQuery] string searchString)
         {
             // LINQ sorgusuyla kitapları ara
-            var booksQuery = from b in _context.Books
-                             select b;
+            var booksQuery = _context.Books.AsQueryable();
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                // Başlık veya yazar adına göre arama yap
+                // Başlık veya yazar adına göre arama yap (Büyük/küçük harf duyarlılığı yok)
                 booksQuery = booksQuery.Where(b =>
-                    b.Title.Contains(searchString) ||
-                    b.Author.Contains(searchString));
+                    b.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    b.Author.Contains(searchString, StringComparison.OrdinalIgnoreCase));
             }
 
             var books = await booksQuery.ToListAsync();

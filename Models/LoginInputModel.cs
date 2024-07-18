@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BookStore1.Models
 {
-    public class LoginInputModel
+    public class LoginViewModel
     {
         [Required]
         [Display(Name = "Username")]

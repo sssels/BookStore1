@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\selen\\OneDrive\\Belgeler\\GitHub\\BookStore1\\BookStore1.csproj": {}
+    "C:\\Users\\selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\selen\\OneDrive\\Belgeler\\GitHub\\BookStore1\\BookStore1.csproj": {
+    "C:\\Users\\selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\selen\\OneDrive\\Belgeler\\GitHub\\BookStore1\\BookStore1.csproj",
+        "projectUniqueName": "C:\\Users\\selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj",
         "projectName": "BookStore1",
-        "projectPath": "C:\\Users\\selen\\OneDrive\\Belgeler\\GitHub\\BookStore1\\BookStore1.csproj",
+        "projectPath": "C:\\Users\\selen\\Documents\\GitHub\\BookStore1\\BookStore1.csproj",
         "packagesPath": "C:\\Users\\selen\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\selen\\OneDrive\\Belgeler\\GitHub\\BookStore1\\obj\\",
+        "outputPath": "C:\\Users\\selen\\Documents\\GitHub\\BookStore1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\selen\\AppData\\Roaming\\NuGet\\NuGet.Config"

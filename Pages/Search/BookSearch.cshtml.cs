@@ -5,7 +5,7 @@ using BookStore1.Data;
 using BookStore1.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-#nullable disable
+
 namespace BookStore1.Pages
 {
     public class BookSearchModel : PageModel
@@ -25,15 +25,14 @@ namespace BookStore1.Pages
             SearchString = searchString;
 
             // LINQ sorgusuyla kitapları ara
-            var booksQuery = from b in _context.Books
-                             select b;
+            var booksQuery = _context.Books.AsQueryable();
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                // Başlık veya yazar adına göre arama yap
+                // Başlık veya yazar adına göre arama yap (Büyük/küçük harf duyarlılığı yok)
                 booksQuery = booksQuery.Where(b =>
-                    b.Title.Contains(searchString) ||
-                    b.Author.Contains(searchString));
+                    b.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    b.Author.Contains(searchString, StringComparison.OrdinalIgnoreCase));
             }
 
             Books = await booksQuery.ToListAsync();
