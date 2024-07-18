@@ -50,7 +50,7 @@ namespace BookStore1.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = _context.Users.SingleOrDefault(u => u.Username == model.Username && u.Password == model.Password);
+            var user = _context.Users.FirstOrDefault(u => u.Username == model.Username && u.Password == model.Password);
 
             if (user == null)
             {
@@ -116,7 +116,7 @@ namespace BookStore1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _context.Users.SingleOrDefault(u => u.Username == model.Username && u.Password == model.Password);
+                var user = _context.Users.FirstOrDefault(u => u.Username == model.Username && u.Password == model.Password);
 
                 if (user != null)
                 {

@@ -24,6 +24,7 @@ namespace BookStore1.Models
 
         [Required]
         [Range(0, double.MaxValue)] // Ensure price is non-negative
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Price { get; set; }
 
         [Required]
