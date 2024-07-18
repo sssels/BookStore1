@@ -109,6 +109,32 @@ namespace BookStore1.Controllers
             return Ok(book);
         }
 
+        // HTTP GET api/books/search
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Book>>> SearchBooks([FromQuery] string? title, [FromQuery] string? author, [FromQuery] string? genre)
+        {
+            var query = _context.Books.AsQueryable();
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                query = query.Where(b => b.Title.Contains(title));
+            }
+
+            if (!string.IsNullOrEmpty(author))
+            {
+                query = query.Where(b => b.Author.Contains(author));
+            }
+
+            if (!string.IsNullOrEmpty(genre))
+            {
+                query = query.Where(b => b.Genre.Contains(genre));
+            }
+
+            var books = await query.ToListAsync();
+
+            return Ok(books);
+        }
+
         private bool BookExists(int id)
         {
             return _context.Books.Any(e => e.Id == id);

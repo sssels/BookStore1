@@ -1,109 +1,101 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 using BookStore1.Data;
 using BookStore1.Models;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookStore1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CartController : ControllerBase
+    public class CartsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public CartController(ApplicationDbContext context)
+        public CartsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
+        // HTTP POST api/carts/add
         [HttpPost("add")]
-        public async Task<IActionResult> AddToCart([FromBody] AddToCartInputModel input)
+        public async Task<IActionResult> AddToCart([FromBody] AddToCartModel model)
         {
-            if (!ModelState.IsValid)
+            var book = await _context.Books.FirstOrDefaultAsync(b => b.Title == model.Title);
+            if (book == null)
             {
-                return BadRequest(ModelState);
+                return NotFound("Book not found.");
             }
-
-            var userId = User.Identity.Name; // Kullanıcı kimliği alınıyor, auth işlemi sonrası doldurulmalı
 
             var cart = await _context.Carts
                 .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
+                .FirstOrDefaultAsync(c => c.UserId == model.UserId);
 
             if (cart == null)
             {
-                cart = new BookStore1.Models.Cart { UserId = userId };
+                cart = new Cart { UserId = model.UserId };
                 _context.Carts.Add(cart);
-                await _context.SaveChangesAsync();
             }
 
-            var cartItem = cart.CartItems.FirstOrDefault(ci => ci.BookId == input.BookId);
+            var cartItem = cart.CartItems.FirstOrDefault(ci => ci.BookId == book.Id);
             if (cartItem == null)
             {
                 cartItem = new CartItem
                 {
-                    CartId = cart.Id,
-                    BookId = input.BookId,
-                    Title = input.Title,
-                    Price = input.Price,
-                    Quantity = input.Quantity
+                    BookId = book.Id,
+                    Quantity = model.Quantity,
+                    Cart = cart
                 };
-                _context.CartItems.Add(cartItem);
+                cart.CartItems.Add(cartItem);
             }
             else
             {
-                cartItem.Quantity += input.Quantity;
+                cartItem.Quantity += model.Quantity;
             }
 
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetCartItem), new { id = cartItem.Id }, cartItem);
+            return Ok(cart);
         }
 
+        // HTTP POST api/carts/remove
         [HttpPost("remove")]
-        public async Task<IActionResult> RemoveFromCart([FromBody] RemoveFromCartInputModel input)
+        public async Task<IActionResult> RemoveFromCart([FromBody] RemoveFromCartModel model)
         {
-            if (!ModelState.IsValid)
+            var book = await _context.Books.FirstOrDefaultAsync(b => b.Title == model.Title);
+            if (book == null)
             {
-                return BadRequest(ModelState);
+                return NotFound("Book not found.");
             }
-
-            var userId = User.Identity.Name; // Kullanıcı kimliği alınıyor, auth işlemi sonrası doldurulmalı
 
             var cart = await _context.Carts
                 .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
+                .FirstOrDefaultAsync(c => c.UserId == model.UserId);
 
             if (cart == null)
             {
                 return NotFound("Cart not found.");
             }
 
-            var cartItem = cart.CartItems.FirstOrDefault(ci => ci.BookId == input.BookId);
+            var cartItem = cart.CartItems.FirstOrDefault(ci => ci.BookId == book.Id);
             if (cartItem == null)
             {
-                return NotFound("Item not found in cart.");
+                return NotFound("Cart item not found.");
             }
 
-            _context.CartItems.Remove(cartItem);
-            await _context.SaveChangesAsync();
+            cart.CartItems.Remove(cartItem);
+            if (!cart.CartItems.Any())
+            {
+                _context.Carts.Remove(cart);
+            }
 
-            return Ok(cartItem);
+            await _context.SaveChangesAsync();
+            return Ok(cart);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCartItem(int id)
+        private bool CartExists(int id)
         {
-            var cartItem = await _context.CartItems.FindAsync(id);
-
-            if (cartItem == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(cartItem);
+            return _context.Carts.Any(e => e.Id == id);
         }
     }
 }

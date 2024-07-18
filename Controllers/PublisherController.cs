@@ -88,7 +88,7 @@ namespace BookStore1.Controllers
 
         // HTTP DELETE api/publisher/{id}
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Publisher>> DeletePublisher(int id)
+        public async Task<IActionResult> DeletePublisher(int id)
         {
             var publisher = await _context.Publishers.FindAsync(id);
             if (publisher == null)
@@ -99,7 +99,7 @@ namespace BookStore1.Controllers
             _context.Publishers.Remove(publisher);
             await _context.SaveChangesAsync();
 
-            return publisher;
+            return Ok(publisher);
         }
 
         private bool PublisherExists(int id)

@@ -1,20 +1,25 @@
-using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BookStore1.Data;
 using BookStore1.Models;
 
-#nullable disable
-
 namespace BookStore1.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
 
-        public RegisterModel(ApplicationDbContext context)
+        public RegisterModel(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            ApplicationDbContext context)
         {
+            _userManager = userManager;
+            _signInManager = signInManager;
             _context = context;
         }
 
@@ -52,17 +57,33 @@ namespace BookStore1.Pages.Account
                 return Page();
             }
 
-            var user = new User
+            var user = new ApplicationUser
             {
-                Username = Username,
-                Email = Email,
-                Password = Password // Note: Storing passwords as plain text is insecure. Use hashing in production.
+                UserName = Username,
+                Email = Email
             };
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            var result = await _userManager.CreateAsync(user, Password);
 
-            SuccessMessage = "Registration successful!";
+            if (result.Succeeded)
+            {
+                // Kullanıcı başarıyla kaydedildi, şimdi oturum açalım
+                await _signInManager.SignInAsync(user, isPersistent: false);
+
+                // Kullanıcının Id değerine erişmek için user.Id kullanabiliriz
+                var userId = user.Id;
+
+                // Başarı mesajı ayarla
+                SuccessMessage = $"Registration successful! UserId: {user.Id}";
+
+                return RedirectToPage("/Index"); // Örnek olarak ana sayfaya yönlendir
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
             return Page();
         }
     }

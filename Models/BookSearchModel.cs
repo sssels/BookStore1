@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using BookStore1.Models;
 
-namespace BookStore1.Pages
+namespace BookStore1.Pages.Search
 {
     public class BookSearchModel : PageModel
     {
@@ -17,16 +17,16 @@ namespace BookStore1.Pages
             _httpClient = httpClient;
         }
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public string Title { get; set; }
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public string Author { get; set; }
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public string Genre { get; set; }
 
-        public List<Book> Books { get; set; }
+        public List<Book> Books { get; private set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -44,20 +44,20 @@ namespace BookStore1.Pages
                 query.Add("genre", Genre);
             }
 
-            var queryString = string.Join("&", query);
+            var queryString = string.Join("&", query.Select(kv => $"{kv.Key}={kv.Value}"));
             var response = await _httpClient.GetAsync($"api/books/search?{queryString}");
 
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
                 Books = JsonSerializer.Deserialize<List<Book>>(responseString);
+                return new JsonResult(Books);
             }
             else
             {
                 Books = new List<Book>();
+                return new JsonResult(Books);
             }
-
-            return Page();
         }
     }
 }
