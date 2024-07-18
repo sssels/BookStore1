@@ -1,101 +1,185 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using BookStore1.Data;
 using BookStore1.Models;
+using BookStore1.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
+#nullable disable
 
 namespace BookStore1.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class CartsController : ControllerBase
+    public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CartsController(ApplicationDbContext context)
+        public CartController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // HTTP POST api/carts/add
-        [HttpPost("add")]
-        public async Task<IActionResult> AddToCart([FromBody] AddToCartModel model)
+        // MVC Kısmı
+        // GET: Cart/Index
+        [HttpGet("/Cart/Index")]
+        public IActionResult Index()
         {
-            var book = await _context.Books.FirstOrDefaultAsync(b => b.Title == model.Title);
-            if (book == null)
-            {
-                return NotFound("Book not found.");
-            }
+            var userId = User.Identity.Name; // Kullanıcının kimliğini alın
+            var cartItems = _context.CartItems
+                .Include(c => c.Book)
+                .Where(c => c.UserId == userId)
+                .ToList();
 
-            var cart = await _context.Carts
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.UserId == model.UserId);
+            var cart = new Cart { CartItems = cartItems };
 
-            if (cart == null)
-            {
-                cart = new Cart { UserId = model.UserId };
-                _context.Carts.Add(cart);
-            }
+            return View(cart);
+        }
 
-            var cartItem = cart.CartItems.FirstOrDefault(ci => ci.BookId == book.Id);
-            if (cartItem == null)
+        // GET: Cart/Checkout
+        [HttpGet("/Cart/Checkout")]
+        public IActionResult Checkout()
+        {
+            var userId = User.Identity.Name; // Kullanıcının kimliğini alın
+            var cartItems = _context.CartItems
+                .Include(c => c.Book)
+                .Where(c => c.UserId == userId)
+                .ToList();
+
+            var cart = new Cart { CartItems = cartItems };
+
+            return View(cart);
+        }
+
+        // POST: Cart/AddToCart
+        [HttpPost("/Cart/AddToCart")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddToCart(CartViewModel model)
+        {
+            if (ModelState.IsValid)
             {
-                cartItem = new CartItem
+                var userId = User.Identity.Name; // Kullanıcının kimliğini alın
+
+                var cartItem = new CartItem
                 {
-                    BookId = book.Id,
+                    BookId = model.BookId,
                     Quantity = model.Quantity,
-                    Cart = cart
+                    UserId = userId
                 };
-                cart.CartItems.Add(cartItem);
-            }
-            else
-            {
-                cartItem.Quantity += model.Quantity;
+
+                _context.CartItems.Add(cartItem);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index");
             }
 
-            await _context.SaveChangesAsync();
-            return Ok(cart);
+            return View(model);
         }
 
-        // HTTP POST api/carts/remove
-        [HttpPost("remove")]
-        public async Task<IActionResult> RemoveFromCart([FromBody] RemoveFromCartModel model)
+        // POST: Cart/RemoveFromCart
+        [HttpPost("/Cart/RemoveFromCart")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveFromCart(CartViewModel model)
         {
-            var book = await _context.Books.FirstOrDefaultAsync(b => b.Title == model.Title);
-            if (book == null)
-            {
-                return NotFound("Book not found.");
-            }
+            var userId = User.Identity.Name; // Kullanıcının kimliğini alın
+            var cartItem = _context.CartItems.SingleOrDefault(c => c.BookId == model.BookId && c.UserId == userId);
 
-            var cart = await _context.Carts
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.UserId == model.UserId);
-
-            if (cart == null)
-            {
-                return NotFound("Cart not found.");
-            }
-
-            var cartItem = cart.CartItems.FirstOrDefault(ci => ci.BookId == book.Id);
             if (cartItem == null)
             {
-                return NotFound("Cart item not found.");
+                return NotFound(new { Message = "Item not found in cart" });
             }
 
-            cart.CartItems.Remove(cartItem);
-            if (!cart.CartItems.Any())
-            {
-                _context.Carts.Remove(cart);
-            }
-
+            _context.CartItems.Remove(cartItem);
             await _context.SaveChangesAsync();
-            return Ok(cart);
+
+            return RedirectToAction("Index");
         }
 
-        private bool CartExists(int id)
+        // POST: Cart/CheckoutConfirmed
+        [HttpPost("/Cart/CheckoutConfirmed")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckoutConfirmed()
         {
-            return _context.Carts.Any(e => e.Id == id);
+            var userId = User.Identity.Name; // Kullanıcının kimliğini alın
+            var cartItems = _context.CartItems.Where(c => c.UserId == userId).ToList();
+
+            if (cartItems.Count == 0)
+            {
+                return RedirectToAction("Index");
+            }
+
+            // Sipariş işleme kodunu buraya ekleyin
+
+            _context.CartItems.RemoveRange(cartItems);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        // API Kısmı
+        // POST: api/Cart/AddToCart
+        [HttpPost("AddToCart")]
+        public async Task<IActionResult> AddToCartApi([FromBody] CartViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userId = User.Identity.Name; // Kullanıcının kimliğini alın
+
+            var cartItem = new CartItem
+            {
+                BookId = model.BookId,
+                Quantity = model.Quantity,
+                UserId = userId
+            };
+
+            _context.CartItems.Add(cartItem);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Item added to cart" });
+        }
+
+        // POST: api/Cart/RemoveFromCart
+        [HttpPost("RemoveFromCart")]
+        public async Task<IActionResult> RemoveFromCartApi([FromBody] CartViewModel model)
+        {
+            var userId = User.Identity.Name; // Kullanıcının kimliğini alın
+            var cartItem = _context.CartItems.SingleOrDefault(c => c.BookId == model.BookId && c.UserId == userId);
+
+            if (cartItem == null)
+            {
+                return NotFound(new { Message = "Item not found in cart" });
+            }
+
+            _context.CartItems.Remove(cartItem);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Item removed from cart" });
+        }
+
+        // POST: api/Cart/CheckoutConfirmed
+        [HttpPost("CheckoutConfirmed")]
+        public async Task<IActionResult> CheckoutConfirmedApi()
+        {
+            var userId = User.Identity.Name; // Kullanıcının kimliğini alın
+            var cartItems = _context.CartItems.Where(c => c.UserId == userId).ToList();
+
+            if (cartItems.Count == 0)
+            {
+                return BadRequest(new { Message = "Cart is empty" });
+            }
+
+            // Sipariş işleme kodunu buraya ekleyin
+
+            _context.CartItems.RemoveRange(cartItems);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Order confirmed" });
         }
     }
 }

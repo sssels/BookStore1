@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace CustomIdentity.Controllers;
-
-[Authorize]
 public class HomeController : Controller
 {
     public IActionResult Index()
@@ -13,14 +10,27 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Privacy()
+    public IActionResult Register()
     {
-        return View();
+        // Register sayfasına yönlendirme
+        return RedirectToAction("Register", "Account");
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public IActionResult Login()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        // Login sayfasına yönlendirme
+        return RedirectToAction("Login", "Account");
+    }
+
+    public IActionResult ViewBooks()
+    {
+        // ViewBooks sayfasına yönlendirme
+        return RedirectToAction("Index", "Books");
+    }
+
+    public IActionResult Cart()
+    {
+        // Cart sayfasına yönlendirme
+        return RedirectToAction("Cart", "Cart");
     }
 }

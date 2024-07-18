@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to BookStore1!</h1>
+    <p class="lead">This is a sample home page for your bookstore.</p>
+    <p>Feel free to navigate through different sections using the links above.</p>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 text-center">
+            <a class="btn btn-primary btn-lg" asp-controller="Account" asp-action="Register" role="button">Register</a>
+            <a class="btn btn-secondary btn-lg" asp-controller="Account" asp-action="Login" role="button">Login</a>
+            <a class="btn btn-success btn-lg" asp-controller="Books" asp-action="Index" role="button">View Books</a>
+            <a class="btn btn-info btn-lg" asp-controller="Cart" asp-action="Index" role="button">Cart</a>
+            <a class="btn btn-warning btn-lg" asp-controller="Books" asp-action="Create" role="button">Create New Book</a>
+            <a class="btn btn-warning btn-lg" asp-controller="Publisher" asp-action="Create" role="button">Publishers</a>
+        </div>
+    </div>
+</div>

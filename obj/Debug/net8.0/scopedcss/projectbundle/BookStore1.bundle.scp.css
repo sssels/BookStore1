@@ -1,49 +1,54 @@
-/* _content/BookStore1/Pages/Shared/_Layout.cshtml.rz.scp.css */
-/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+/* _content/BookStore1/Views/Shared/_Layout.cshtml.rz.scp.css */
+/* General styles */
+body[b-6cbo69gl0l] {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
 
-a.navbar-brand[b-krds2icl4x] {
-  white-space: normal;
+.header[b-6cbo69gl0l],
+.footer[b-6cbo69gl0l] {
+  background-color: #f8f9fa;
+  padding: 10px 0;
   text-align: center;
-  word-break: break-all;
 }
 
-a[b-krds2icl4x] {
-  color: #0077cc;
+/* Navbar styles */
+.navbar[b-6cbo69gl0l] {
+  margin-bottom: 20px;
 }
 
-.btn-primary[b-krds2icl4x] {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.navbar-nav[b-6cbo69gl0l] {
+  margin-left: auto;
 }
 
-.nav-pills .nav-link.active[b-krds2icl4x], .nav-pills .show > .nav-link[b-krds2icl4x] {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.navbar-brand[b-6cbo69gl0l] {
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
-.border-top[b-krds2icl4x] {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom[b-krds2icl4x] {
-  border-bottom: 1px solid #e5e5e5;
+.navbar-dark .navbar-nav .nav-link[b-6cbo69gl0l] {
+  color: #ffffff;
 }
 
-.box-shadow[b-krds2icl4x] {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+.navbar-dark .navbar-nav .nav-link:hover[b-6cbo69gl0l] {
+  color: #e9ecef;
 }
 
-button.accept-policy[b-krds2icl4x] {
-  font-size: 1rem;
-  line-height: inherit;
+/* Container styles */
+.container[b-6cbo69gl0l] {
+  max-width: 1140px;
 }
 
-.footer[b-krds2icl4x] {
-  position: absolute;
+.body-content[b-6cbo69gl0l] {
+  min-height: 400px;
+}
+
+/* Footer styles */
+.footer[b-6cbo69gl0l] {
+  position: fixed;
   bottom: 0;
   width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+  background-color: #343a40;
+  color: #ffffff;
+  padding: 10px 0;
 }

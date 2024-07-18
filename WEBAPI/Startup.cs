@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using BookStore1.Data;
 using BookStore1.Models;
+using System;
 using System.Text;
 
 #nullable disable
@@ -29,10 +31,6 @@ namespace BookStore1
             // Configure DbContext
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllersWithViews();
-            services.AddControllers();
-            services.AddHttpClient();
-            services.AddLogging();
 
             // Configure Identity
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -118,6 +116,8 @@ namespace BookStore1
             // Add Controllers and Razor Pages
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddHttpClient();
+            services.AddLogging();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
@@ -146,7 +146,6 @@ namespace BookStore1
             app.UseAuthorization();
 
             app.UseCors("AllowAll");
-            
 
             app.UseEndpoints(endpoints =>
             {
@@ -157,10 +156,8 @@ namespace BookStore1
                 endpoints.MapControllers();
             });
 
-
             // Initialize roles and admin user
             RoleInitializer.InitializeAsync(serviceProvider).Wait();
         }
-        
     }
 }

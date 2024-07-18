@@ -1,50 +1,49 @@
-/* _content/BookStore1/Views/Shared/_Layout.cshtml.rz.scp.css */
-/* General styles */
-body[b-6cbo69gl0l] {
+﻿/* General styles */
+body {
   padding-top: 60px;
   padding-bottom: 40px;
 }
 
-.header[b-6cbo69gl0l],
-.footer[b-6cbo69gl0l] {
+.header,
+.footer {
   background-color: #f8f9fa;
   padding: 10px 0;
   text-align: center;
 }
 
 /* Navbar styles */
-.navbar[b-6cbo69gl0l] {
+.navbar {
   margin-bottom: 20px;
 }
 
-.navbar-nav[b-6cbo69gl0l] {
+.navbar-nav {
   margin-left: auto;
 }
 
-.navbar-brand[b-6cbo69gl0l] {
+.navbar-brand {
   font-weight: bold;
   font-size: 1.5rem;
 }
 
-.navbar-dark .navbar-nav .nav-link[b-6cbo69gl0l] {
+.navbar-dark .navbar-nav .nav-link {
   color: #ffffff;
 }
 
-.navbar-dark .navbar-nav .nav-link:hover[b-6cbo69gl0l] {
+.navbar-dark .navbar-nav .nav-link:hover {
   color: #e9ecef;
 }
 
 /* Container styles */
-.container[b-6cbo69gl0l] {
+.container {
   max-width: 1140px;
 }
 
-.body-content[b-6cbo69gl0l] {
+.body-content {
   min-height: 400px;
 }
 
 /* Footer styles */
-.footer[b-6cbo69gl0l] {
+.footer {
   position: fixed;
   bottom: 0;
   width: 100%;

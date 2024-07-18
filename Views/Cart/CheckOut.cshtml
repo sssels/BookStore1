@@ -1,0 +1,31 @@
+@model BookStore1.Models.Cart
+
+<h2>Checkout</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.CartItems)
+    {
+        <tr>
+            <td>@item.Book.Title</td>
+            <td>@item.Book.Price</td>
+            <td>@item.Quantity</td>
+            <td>@(item.Book.Price * item.Quantity)</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<div>Total: @(Model.CartItems.Sum(item => item.Book.Price * item.Quantity))</div>
+
+<form asp-action="CheckoutConfirmed">
+    <button type="submit" class="btn btn-primary">Confirm Order</button>
+</form>
